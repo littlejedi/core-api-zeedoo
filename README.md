@@ -1,4 +1,4 @@
 api-users
 =========
-
-API for User Management
+Zeedoo, Inc
+Interal API for User Management
