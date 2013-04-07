@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.yammer.dropwizard.config.Configuration;
+import com.yammer.metrics.annotation.Timed;
 import com.zeedoo.api.users.service.AppService;
 
 @Path("/hello")
@@ -33,11 +34,13 @@ public class HelloResource {
     //private Environment environment;
 
     @GET
+    @Timed
     public Response doGet() {
         return Response.ok(String.format("%s<br/>Hello application is running on port : %d; connectorType : %s", appService.greeting(), port, configuration.getHttpConfiguration().getConnectorType())).build();
     }
     
     @POST
+    @Timed
     public Response doPost(String payload) {
     	LOGGER.info(payload);
         return Response.ok(String.format("%s<br/>Hello application is running on port : %d; connectorType : %s", appService.greeting(), port, configuration.getHttpConfiguration().getConnectorType())).build();
