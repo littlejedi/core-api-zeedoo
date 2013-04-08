@@ -14,6 +14,9 @@ import com.zeedoo.api.users.tasks.AppTask;
  */
 @Configuration
 public class SpringConfiguration {
+	
+	@Value("${config.env}")
+	private String env;
 
 	@Value("${config.message}")
 	@JsonProperty
@@ -41,4 +44,12 @@ public class SpringConfiguration {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+	public String getEnv() {
+		return env;
+	}
+
+	public void setEnv(String env) {
+		this.env = env;
+	}	
 }

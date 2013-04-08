@@ -3,16 +3,24 @@ package com.zeedoo.api.users.resources;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.dataformat.yaml.snakeyaml.nodes.Tag;
+import com.google.common.base.Optional;
 import com.yammer.dropwizard.config.Configuration;
 import com.yammer.metrics.annotation.Timed;
+import com.zeedoo.api.users.database.SqlMapper;
+import com.zeedoo.api.users.database.SqlService;
+import com.zeedoo.api.users.domain.User;
 import com.zeedoo.api.users.service.AppService;
 
 @Path("/hello")
@@ -20,8 +28,11 @@ import com.zeedoo.api.users.service.AppService;
 public class HelloResource {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(HelloResource.class);
-
-    @Autowired
+	
+	@Autowired
+	private SqlService sqlSerive;
+	
+	@Autowired
     private AppService appService;
 
     @Value("${http.port}")
@@ -35,7 +46,16 @@ public class HelloResource {
 
     @GET
     @Timed
-    public Response doGet() {
+    public Response doGet(@QueryParam("username") Optional<String> username) {
+    	if (username.isPresent()) {
+    		SqlSessionFactory factory = SqlService.getSessionFactory();
+    		SqlSession session = factory.openSession();
+    		SqlMapper mapper = session.getMapper(SqlMapper.class);
+    		User user = mapper.selectUserByUsername(username.get());
+    		LOGGER.info("Got user: {}", user);
+    	    session.close();
+    	    return Response.ok(user.toString()).build();
+    	}
         return Response.ok(String.format("%s<br/>Hello application is running on port : %d; connectorType : %s", appService.greeting(), port, configuration.getHttpConfiguration().getConnectorType())).build();
     }
     

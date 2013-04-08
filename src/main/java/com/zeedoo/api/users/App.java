@@ -12,7 +12,7 @@ import com.zeedoo.api.users.config.AppConfiguration;
 
 public class App extends Service<AppConfiguration> {
 
-	private static final String CONFIGURATION_FILE = "src/main/resources/com/zeedoo/api/config/config.yml";
+	private static final String CONFIGURATION_FILE = "src/main/resources/com/zeedoo/api/users/config/config.yml";
 
 	public static void main(String[] args) throws Exception {
 		new App().run(new String[] { "server", CONFIGURATION_FILE });

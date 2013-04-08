@@ -1,4 +1,4 @@
-package com.zeedoo.api.domain;
+package com.zeedoo.api.users.domain;
 
 import com.google.common.base.Objects;
 

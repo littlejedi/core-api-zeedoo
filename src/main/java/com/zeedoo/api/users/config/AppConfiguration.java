@@ -11,7 +11,7 @@ import com.yammer.dropwizard.config.Configuration;
  */
 
 public class AppConfiguration extends Configuration {
-
+	
 	@JsonProperty
 	private SpringConfiguration config;
 
