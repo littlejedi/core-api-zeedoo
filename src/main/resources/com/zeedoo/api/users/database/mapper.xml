@@ -6,9 +6,16 @@
     <resultMap type="com.zeedoo.api.users.domain.User" id="userMap">
         <result column="use_username" property="username"/>
         <result column="use_password" property="password"/>
+        <result column="use_email" property="email"/>
+        <result column="use_uuid" property="uuid"/>
+        <result column="use_nickname" property="nickname"/>
     </resultMap>
     
-    <select id="selectUserByUsername" resultMap="userMap">
+    <select id="findByUsername" resultMap="userMap">
         SELECT * FROM users WHERE use_username = #{username}
+    </select>
+    
+     <select id="get" resultMap="userMap">
+        SELECT * FROM users WHERE use_uuid = #{uuid}
     </select>
 </mapper>

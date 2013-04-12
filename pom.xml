@@ -26,6 +26,12 @@
 			<version>${dropwizard.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.yammer.dropwizard</groupId>
+			<artifactId>dropwizard-auth</artifactId>
+			<version>${dropwizard.version}</version>
+		</dependency>
+
 		<!-- Dropwizard and Spring integration -->
 		<dependency>
 			<groupId>com.github.nhuray</groupId>
@@ -58,6 +64,13 @@
 			<version>5.1.23</version>
 		</dependency>
 
+		<!-- Jersey -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.17.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>jsr250-api</artifactId>
@@ -69,7 +82,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
