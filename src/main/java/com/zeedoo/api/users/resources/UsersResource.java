@@ -46,7 +46,7 @@ public class UsersResource {
 			throw new WebApplicationException(Status.NOT_FOUND);
 		}
 	}
-	
+		
 	// Find By Queries
 	@Path("findByUsername")
 	@GET

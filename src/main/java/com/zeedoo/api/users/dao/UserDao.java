@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Optional;
@@ -16,10 +17,13 @@ import com.zeedoo.api.users.domain.User;
 @Component
 public class UserDao {
 	
+	@Autowired
+	SqlService sqlService;
+	
 	@Timed(name = "UserDao.get")
 	public User get(UUID uuid) {
 		Preconditions.checkNotNull(uuid, "uuid should not be null!");
-		SqlSessionFactory factory = SqlService.getSessionFactory();
+		SqlSessionFactory factory = sqlService.getSessionFactory();
 		SqlSession session = factory.openSession();
 		SqlMapper mapper = session.getMapper(SqlMapper.class);
 		try {
@@ -33,7 +37,7 @@ public class UserDao {
 	//TODO: figure out how to time this
 	public User findByUsername(String username) {
 		Preconditions.checkNotNull(username, "Username should not be null!");
-		SqlSessionFactory factory = SqlService.getSessionFactory();
+		SqlSessionFactory factory = sqlService.getSessionFactory();
 		SqlSession session = factory.openSession();
 		SqlMapper mapper = session.getMapper(SqlMapper.class);
 		try {
@@ -43,8 +47,15 @@ public class UserDao {
 		}
 	}
 	
-	
 	public Optional<User> getByApiKey(String apiKey) {
 		return Optional.absent();
 	}
+
+	public SqlService getSqlService() {
+		return sqlService;
+	}
+
+	public void setSqlService(SqlService sqlService) {
+		this.sqlService = sqlService;
+	}	
 }

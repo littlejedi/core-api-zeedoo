@@ -32,8 +32,15 @@ public class SqlService {
 		}
 	}
     
-	public static SqlSessionFactory getSessionFactory() {
+	public SqlSessionFactory getSessionFactory() {
 	    return sqlSessionFactory;
 	}
 
+	public String getEnvironment() {
+		return environment;
+	}
+
+	public void setEnvironment(String environment) {
+		this.environment = environment;
+	}
 }

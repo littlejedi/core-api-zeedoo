@@ -33,7 +33,8 @@ public class HmacServerAuthenticator implements Authenticator<HmacServerCredenti
     }
 
     // Locate their secret key
-    String secretKey = user.get().getSecretKey();
+    //FIXME: Fix this
+    String secretKey = user.get().getEmail();
 
     String computedSignature = new String(
       HmacUtils.computeSignature(
