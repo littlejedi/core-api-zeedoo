@@ -46,7 +46,18 @@ public class UsersResource {
 			throw new WebApplicationException(Status.NOT_FOUND);
 		}
 	}
-		
+	
+	// Login 
+	//@Path("/login")
+	//@POST
+	//@Timed
+	//public 
+	
+        // Register
+	//@Path("/register")
+	//@POST
+	//@Timed
+
 	// Find By Queries
 	@Path("findByUsername")
 	@GET
