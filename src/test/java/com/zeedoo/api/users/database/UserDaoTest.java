@@ -5,6 +5,7 @@ import java.util.UUID;
 import junit.framework.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.zeedoo.api.users.dao.UserDao;
@@ -29,6 +30,7 @@ public class UserDaoTest {
 	}
 
 	@Test
+	@Ignore
 	public void testGet() {
 		User user = userDao.get(UUID.fromString(TEST_USER_UUID));
 		Assert.assertEquals("littlejedi", user.getUsername());
@@ -36,10 +38,28 @@ public class UserDaoTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testGetUserByUsername() {
 		User user = userDao.getUserByUsername(TEST_USERNAME);
 		Assert.assertEquals("littlejedi", user.getUsername());
 		Assert.assertEquals("test456", user.getPassword());
+	}
+	
+	@Test
+	public void testInsertUser() {
+		User user = new User();
+		UUID uuid = UUID.randomUUID();
+		String uuidNoDashes = uuid.toString().replace("-", "");
+		user.setUsername(uuidNoDashes);
+		user.setPassword("password");
+		user.setUuid(uuid);
+		int result = userDao.insertUser(user);
+		user = userDao.getUserByUsername(uuidNoDashes);
+		Assert.assertNotNull(user);
+		Assert.assertTrue(result == 1);
+		// delete this user
+		result = userDao.deleteUserByUsername(uuidNoDashes);
+		Assert.assertTrue(result == 1);
 	}
 
 }

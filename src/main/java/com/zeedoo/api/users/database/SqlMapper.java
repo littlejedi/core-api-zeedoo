@@ -18,4 +18,6 @@ public interface SqlMapper {
 	
 	int insert(@Param(value = "user") User newUser);
 	
+	int deleteUserByUsername(@Param(value = "username") String username);
+	
 }

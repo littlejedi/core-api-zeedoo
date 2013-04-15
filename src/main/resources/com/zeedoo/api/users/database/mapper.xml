@@ -23,4 +23,8 @@
 	    INSERT INTO users (use_username, use_password, use_email, use_nickname, use_uuid)
 	    values (#{user.username},#{user.password},#{user.email},#{user.nickname},#{user.uuid})
 	</insert>
+	
+	<delete id="deleteUserByUsername">
+	    DELETE FROM users WHERE use_username = #{username}
+	</delete>
 </mapper>

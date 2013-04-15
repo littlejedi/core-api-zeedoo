@@ -20,9 +20,9 @@ public class UserDao {
 	SqlService sqlService;
 	
 	public User get(UUID uuid) {
-		Preconditions.checkNotNull(uuid, "uuid should not be null!");
+		Preconditions.checkArgument(uuid != null);
 		SqlSessionFactory factory = sqlService.getSessionFactory();
-		SqlSession session = factory.openSession();
+		SqlSession session = factory.openSession(true);
 		SqlMapper mapper = session.getMapper(SqlMapper.class);
 		try {
 			return mapper.get(uuid);
@@ -33,9 +33,9 @@ public class UserDao {
 	
 	//TODO: figure out how to time this
 	public User getUserByUsername(String username) {
-		Preconditions.checkNotNull(username, "Username should not be null!");
+		Preconditions.checkArgument(username != null);
 		SqlSessionFactory factory = sqlService.getSessionFactory();
-		SqlSession session = factory.openSession();
+		SqlSession session = factory.openSession(true);
 		SqlMapper mapper = session.getMapper(SqlMapper.class);
 		try {
 			return mapper.getUserByUsername(username);
@@ -51,6 +51,17 @@ public class UserDao {
 		SqlMapper mapper = session.getMapper(SqlMapper.class);
 		try {
 			return mapper.insert(user);
+		} finally {
+			session.close();
+		}
+	}
+	
+	public int deleteUserByUsername(String username) {
+		SqlSessionFactory factory = sqlService.getSessionFactory();
+		SqlSession session = factory.openSession(true);
+		SqlMapper mapper = session.getMapper(SqlMapper.class);
+		try {
+			return mapper.deleteUserByUsername(username);
 		} finally {
 			session.close();
 		}
