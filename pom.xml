@@ -95,7 +95,15 @@
 			<version>14.0</version>
 		</dependency>
 
-        <!-- Test -->
+		<!-- Encryption -->
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Test -->
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>

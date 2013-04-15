@@ -2,6 +2,8 @@ package com.zeedoo.api.users.domain;
 
 import java.util.UUID;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.google.common.base.Objects;
 
 public class User {
@@ -9,10 +11,14 @@ public class User {
 	//TODO: Make this read-only / add read only annotation
 	private UUID uuid;
 	
+	@NotEmpty
 	private String username;
 	
+	@NotEmpty
 	private String password;
 	
+	//TODO: Use Size annotation
+	//@Size()
 	private String email;
 	
 	private String nickname;

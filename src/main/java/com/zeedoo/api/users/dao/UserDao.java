@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.yammer.metrics.annotation.Timed;
 import com.zeedoo.api.users.database.SqlMapper;
 import com.zeedoo.api.users.database.SqlService;
 import com.zeedoo.api.users.domain.User;
@@ -20,7 +19,6 @@ public class UserDao {
 	@Autowired
 	SqlService sqlService;
 	
-	@Timed(name = "UserDao.get")
 	public User get(UUID uuid) {
 		Preconditions.checkNotNull(uuid, "uuid should not be null!");
 		SqlSessionFactory factory = sqlService.getSessionFactory();
@@ -33,15 +31,26 @@ public class UserDao {
 		}
 	}
 	
-	@Timed(name = "UserDao.findByUsername")
 	//TODO: figure out how to time this
-	public User findByUsername(String username) {
+	public User getUserByUsername(String username) {
 		Preconditions.checkNotNull(username, "Username should not be null!");
 		SqlSessionFactory factory = sqlService.getSessionFactory();
 		SqlSession session = factory.openSession();
 		SqlMapper mapper = session.getMapper(SqlMapper.class);
 		try {
-			return mapper.findByUsername(username);
+			return mapper.getUserByUsername(username);
+		} finally {
+			session.close();
+		}
+	}
+	
+	public int insertUser(User user) {
+		SqlSessionFactory factory = sqlService.getSessionFactory();
+		// Setting AUTOCOMMIT = TRUE ensures the update goes through
+		SqlSession session = factory.openSession(true);
+		SqlMapper mapper = session.getMapper(SqlMapper.class);
+		try {
+			return mapper.insert(user);
 		} finally {
 			session.close();
 		}

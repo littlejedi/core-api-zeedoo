@@ -14,6 +14,8 @@ public interface SqlMapper {
 	 */
 	User get(@Param(value = "uuid") UUID uuid);
 	
-	User findByUsername(@Param(value = "username") String username);
+	User getUserByUsername(@Param(value = "username") String username);
+	
+	int insert(@Param(value = "user") User newUser);
 	
 }
