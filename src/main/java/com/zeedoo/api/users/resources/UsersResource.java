@@ -99,7 +99,7 @@ public class UsersResource {
         // Generate UUID
 		user.setUuid(UUID.randomUUID());
 		// Use DAO to create the user
-	    int result = userDao.insertUser(user);
+	    userDao.insertUser(user);
 	    return user;
 	}
 }
