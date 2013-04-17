@@ -23,6 +23,11 @@ public class User {
 	
 	private String nickname;
 	
+	// For API Authentication purposes
+	private String apiKey;
+	
+	private String secretKey;
+	
 	public UUID getUuid() {
 		return uuid;
 	}
@@ -63,9 +68,25 @@ public class User {
 		this.email = email;
 	}
 	
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
+	public String getSecretKey() {
+		return secretKey;
+	}
+
+	public void setSecretKey(String secretKey) {
+		this.secretKey = secretKey;
+	}
+	
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(uuid, username, password, email, nickname);
+		return Objects.hashCode(uuid, username, password, email, nickname, apiKey, secretKey);
 	}
 
 	@Override
@@ -81,11 +102,14 @@ public class User {
 				&& Objects.equal(this.email, other.email)
 				&& Objects.equal(this.username, other.username)
 				&& Objects.equal(this.password, other.password)
-				&& Objects.equal(this.nickname, other.nickname);
+				&& Objects.equal(this.nickname, other.nickname)
+				&& Objects.equal(this.apiKey,  other.apiKey)
+				&& Objects.equal(this.secretKey, other.secretKey);
 	}
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("email", email).add("username", username).add("nickname", nickname).add("uuid", uuid).toString();
+		return Objects.toStringHelper(this).add("email", email).add("username", username)
+				.add("nickname", nickname).add("uuid", uuid).add("apiKey", apiKey).add("secretKey", secretKey).toString();
 	}
 }

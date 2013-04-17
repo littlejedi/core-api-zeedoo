@@ -4,6 +4,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.security.MessageDigest;
 
+import org.springframework.stereotype.Component;
+
 import com.google.common.base.Charsets;
 import com.google.common.base.Objects;
 

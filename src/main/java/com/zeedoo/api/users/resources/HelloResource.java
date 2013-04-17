@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.config.Configuration;
 import com.yammer.metrics.annotation.Timed;
-import com.zeedoo.api.users.database.SqlService;
 import com.zeedoo.api.users.service.AppService;
 
 @Path("/hello")

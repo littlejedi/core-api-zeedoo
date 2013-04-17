@@ -95,7 +95,7 @@ public class HmacUtils {
   public static final String PREFIX = "HMAC";
   public static final String X_HMAC_NONCE = "X-HMAC-Nonce";
   public static final String X_HMAC_DATE = "X-HMAC-Date";
-  static final String HEADER_VALUE = PREFIX + " realm=\"%s\"";
+  public static final String HEADER_VALUE = PREFIX + " realm=\"%s\"";
 
   /**
    * Compute the HMAC signature for the given data and shared secret

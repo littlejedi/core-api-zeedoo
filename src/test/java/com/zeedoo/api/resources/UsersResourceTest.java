@@ -7,12 +7,14 @@ import javax.ws.rs.core.MediaType;
 import junit.framework.Assert;
 
 import org.eclipse.jetty.server.Response;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.zeedoo.api.client.HmacClientFilter;
 import com.zeedoo.api.users.App;
 import com.zeedoo.api.users.DropwizardJunitRunner;
 import com.zeedoo.api.users.ServiceConfiguration;
@@ -24,6 +26,8 @@ public class UsersResourceTest {
 	
 	private static final String TEST_USER_UUID = "5102e2a9-201c-4a26-8d69-7b8b93f85a55";
 	private static final String TEST_USERNAME = "littlejedi";
+	private static final String TEST_API_KEY = "dev";
+	private static final String TEST_SECRET_KEY = "6fdd1400-a709-11e2-9e96-0800200c9a66";
 	
 	@Test
 	public void testRegisterUser() {
@@ -48,6 +52,9 @@ public class UsersResourceTest {
 	public void testGetUser() {
 		// GET by username
 		Client client = Client.create();
+		client.getProperties().put("api_key", TEST_API_KEY);
+		client.getProperties().put("secret_key", TEST_SECRET_KEY);
+		client.addFilter(new HmacClientFilter(client.getProviders()));
 		WebResource webResource = client
 				.resource("http://localhost:9898/users").path(TEST_USERNAME);
 		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);

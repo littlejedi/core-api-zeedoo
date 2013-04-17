@@ -1,8 +1,11 @@
 package com.zeedoo.api.users.hmac;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
@@ -19,28 +22,33 @@ import com.zeedoo.api.users.hmac.utils.HmacUtils;
  */
 @Component
 public class HmacServerAuthenticator implements Authenticator<HmacServerCredentials, User> {
+	
+  private final Logger LOGGER = LoggerFactory.getLogger(HmacServerAuthenticator.class);
 
   @Autowired
   private UserDao userDao;
 
   @Override
   public Optional<User> authenticate(HmacServerCredentials credentials) throws AuthenticationException {
-
+     	    
     // Get the User referred to by the API key
-    Optional<User> user = userDao.getByApiKey(credentials.getApiKey());
+    Optional<User> user = Optional.fromNullable(userDao.getUserByApiKey(credentials.getApiKey()));
     if (!user.isPresent()) {
       return Optional.absent();
     }
-
+    
     // Locate their secret key
-    //FIXME: Fix this
-    String secretKey = user.get().getEmail();
+    Optional<String> secretKey = Optional.fromNullable(user.get().getSecretKey());
+    if (!secretKey.isPresent()) {
+    	LOGGER.warn("User {0} has an API but a null secret key", user.get().getUsername());
+    	return Optional.absent();
+    }
 
     String computedSignature = new String(
       HmacUtils.computeSignature(
         credentials.getAlgorithm(),
         credentials.getCanonicalRepresentation().getBytes(),
-        secretKey.getBytes()));
+        secretKey.get().getBytes()));
 
     // Avoid timing attacks by verifying every byte every time
     if (isEqual(computedSignature.getBytes(), credentials.getDigest().getBytes())) {

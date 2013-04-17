@@ -24,6 +24,7 @@ import com.yammer.metrics.annotation.Timed;
 import com.zeedoo.api.users.dao.UserDao;
 import com.zeedoo.api.users.domain.User;
 import com.zeedoo.api.users.domain.UserCredentials;
+import com.zeedoo.api.users.hmac.Restricted;
 import com.zeedoo.api.users.utils.UuidUtils;
 
 @Path("/users")
@@ -46,7 +47,7 @@ public class UsersResource {
 	@Path("{id}")
 	@GET
 	@Timed
-	public User doGet(@PathParam("id") String id) {
+	public User doGet(@Restricted User adminUser, @PathParam("id") String id) {
 		Optional<User> user = Optional.absent();
 		// Check if this is UUID
 		if (UuidUtils.isValidUUIDString(id)) {

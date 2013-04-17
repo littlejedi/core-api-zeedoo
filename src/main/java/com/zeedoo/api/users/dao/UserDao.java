@@ -44,6 +44,18 @@ public class UserDao {
 		}
 	}
 	
+	public User getUserByApiKey(String apiKey) {
+		Preconditions.checkArgument(apiKey != null);
+		SqlSessionFactory factory = sqlService.getSessionFactory();
+		SqlSession session = factory.openSession(true);
+		SqlMapper mapper = session.getMapper(SqlMapper.class);
+		try {
+			return mapper.getUserByApiKey(apiKey);
+		} finally {
+			session.close();
+		}
+	}
+	
 	public int insertUser(User user) {
 		SqlSessionFactory factory = sqlService.getSessionFactory();
 		// Setting AUTOCOMMIT = TRUE ensures the update goes through
@@ -67,10 +79,6 @@ public class UserDao {
 		}
 	}
 	
-	public Optional<User> getByApiKey(String apiKey) {
-		return Optional.absent();
-	}
-
 	public SqlService getSqlService() {
 		return sqlService;
 	}

@@ -15,7 +15,7 @@ public class AppConfiguration extends Configuration {
 	@JsonProperty
 	private SpringConfiguration config;
 
-	public SpringConfiguration getHello() {
+	public SpringConfiguration getSpringConfiguration() {
 		return config;
 	}
 

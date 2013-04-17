@@ -3,5 +3,7 @@
     "username" : "username",
     "password" : "password",
     "email" : "email",
-    "nickname" : "nickname"
+    "nickname" : "nickname",
+    "apiKey" : null,
+    "secretKey" : null
 }

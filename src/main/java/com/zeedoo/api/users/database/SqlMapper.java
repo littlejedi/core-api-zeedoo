@@ -16,8 +16,9 @@ public interface SqlMapper {
 	
 	User getUserByUsername(@Param(value = "username") String username);
 	
+	User getUserByApiKey(@Param(value = "apiKey") String apiKey);
+	
 	int insert(@Param(value = "user") User newUser);
 	
 	int deleteUserByUsername(@Param(value = "username") String username);
-	
 }
