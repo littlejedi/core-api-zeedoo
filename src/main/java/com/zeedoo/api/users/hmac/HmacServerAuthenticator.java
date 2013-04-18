@@ -47,9 +47,9 @@ public class HmacServerAuthenticator implements Authenticator<HmacServerCredenti
     String computedSignature = new String(
       HmacUtils.computeSignature(
         credentials.getAlgorithm(),
-        credentials.getCanonicalRepresentation().getBytes(),
-        secretKey.get().getBytes()));
-
+        credentials.getCanonicalRepresentation(),
+        secretKey.get()));
+       
     // Avoid timing attacks by verifying every byte every time
     if (isEqual(computedSignature.getBytes(), credentials.getDigest().getBytes())) {
       return user;

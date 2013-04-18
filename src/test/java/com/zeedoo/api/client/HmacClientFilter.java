@@ -76,7 +76,7 @@ public class HmacClientFilter extends ClientFilter {
     LOGGER.debug("Client side canonical representation: '{}'", canonicalRepresentation);
 
     // Build the authorization header
-    String signature = new String(HmacUtils.computeSignature("HmacSHA1", canonicalRepresentation.getBytes(), sharedSecret.getBytes()));
+    String signature = new String(HmacUtils.computeSignature("HmacSHA1", canonicalRepresentation, sharedSecret));
     String authorization = "HMAC " + publicKey + " " + signature;
     clientRequest.getHeaders().put(HttpHeaders.AUTHORIZATION, Lists.<Object>newArrayList(authorization));
 

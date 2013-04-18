@@ -4,8 +4,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -106,10 +108,13 @@ public class HmacUtils {
    *
    * @return A base 64 encoded signature encoded as UTF-8
    */
-  public static byte[] computeSignature(String algorithm, byte[] data, byte[] sharedSecret) {
-
-    try {
-      SecretKey secretKey = new SecretKeySpec(Base64.decode(sharedSecret), algorithm);
+  public static byte[] computeSignature(String algorithm, String dataMessage, String secretMessage) {
+      try {
+      // Use UTF-8 encoding
+      byte[] data = dataMessage.getBytes("UTF-8");
+      byte[] sharedSecret = secretMessage.getBytes("UTF-8");
+      SecretKey secretKey = new SecretKeySpec(sharedSecret, algorithm);
+      //SecretKey secretKey = new SecretKeySpec(Base64.decode(sharedSecret), algorithm);
       Mac mac = Mac.getInstance(algorithm);
       mac.init(secretKey);
       mac.update(data);
@@ -117,6 +122,8 @@ public class HmacUtils {
     } catch (NoSuchAlgorithmException e) {
       throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
     } catch (InvalidKeyException e) {
+      throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
+    } catch (UnsupportedEncodingException e) {
       throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
     }
   }
@@ -132,7 +139,7 @@ public class HmacUtils {
     MultivaluedMap<String, Object> originalHeaders = clientRequest.getHeaders();
 
     // Compute the representation signature
-    String signature = new String(HmacUtils.computeSignature("HmacSHA1", canonicalRepresentation.getBytes(), sharedSecret.getBytes()));
+    String signature = new String(HmacUtils.computeSignature("HmacSHA1", canonicalRepresentation, sharedSecret));
     String authorization = "HMAC " + apiKey + " " + signature;
 
     String httpMethod = clientRequest.getMethod().toUpperCase();
@@ -282,7 +289,7 @@ public class HmacUtils {
 
     // Append the original URI (URL-decoded)
     canonicalRepresentation.append(uri.toString());
-
+    
     // Check for payload
     if (isEntityRequired(clientRequest.getEntity(), httpMethod)) {
       // Include the entity as a simple string
