@@ -14,8 +14,8 @@
 	</resultMap>
 
 	<select id="get" resultMap="userMap">
-		SELECT * FROM users WHERE use_uuid =
-		#{uuid}
+		SELECT * FROM users 
+		WHERE use_uuid = #{uuid}
 	</select>
 
 	<select id="getUserByUsername" resultMap="userMap">
@@ -27,6 +27,15 @@
 		SELECT * FROM users
 		WHERE use_api_key = #{apiKey}
 	</select>
+	
+	<update id="update">
+	    UPDATE users SET
+	      use_email = #{user.email},
+	      use_nickname = #{user.nickname},
+	      use_api_key = #{user.apiKey},
+	      use_secret_key = #{user.secretKey}
+	    WHERE use_username = #{id} OR use_uuid = #{id}
+	</update>
 
 	<insert id="insert">
 		INSERT INTO users (use_username, use_password, use_email, use_nickname,

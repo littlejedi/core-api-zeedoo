@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -62,12 +63,31 @@ public class UsersResource {
 			throw new WebApplicationException(Status.NOT_FOUND);
 		}
 	}
+	
+	/**
+	 * Updates a user with the given payload
+	 * Validation of the user object is not required since it's an update rather than insert
+	 * @param adminUser
+	 * @param id
+	 * @return
+	 */
+	@Path("{id}")
+	@PUT
+	@Timed
+	public User doPut(@Restricted User adminUser, @PathParam("id") String id, User user) {
+        int result = userDao.updateUser(id, user);
+        if (result == 0) {
+        	throw new WebApplicationException(Status.NOT_FOUND);
+        } else{
+        	return this.doGet(adminUser, id);
+        }
+	}
 
 	// Login
 	@Path("/login")
 	@POST
 	@Timed
-	public User doLogin(@Valid UserCredentials credz) {
+	public User doLogin(@Restricted User adminUser, @Valid UserCredentials credz) {
 		Optional<User> user = Optional.fromNullable(userDao.getUserByUsername(credz.getUsername()));
 		if (user.isPresent()) {
 			BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
@@ -89,8 +109,8 @@ public class UsersResource {
 	@Path("/register")
 	@POST
 	@Timed
-	public User doRegister(@Valid User user) {
-		LOGGER.info(user.toString());
+	public User doRegister(@Restricted User adminUser, @Valid User user) {
+		LOGGER.info("Register User: {}", user.toString());
 		// User should be already validated by annotation
 		// Encrypt the password
 		BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();

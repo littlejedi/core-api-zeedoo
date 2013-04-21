@@ -7,7 +7,6 @@ import javax.ws.rs.core.MediaType;
 import junit.framework.Assert;
 
 import org.eclipse.jetty.server.Response;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,6 +31,9 @@ public class UsersResourceTest {
 	@Test
 	public void testRegisterUser() {
 		Client client = Client.create();
+		client.getProperties().put("api_key", TEST_API_KEY);
+		client.getProperties().put("secret_key", TEST_SECRET_KEY);
+		client.addFilter(new HmacClientFilter(client.getProviders()));
 		WebResource webResource = client
 				.resource("http://localhost:9898/users/register");
 		UUID uuid = UUID.randomUUID();
@@ -75,5 +77,31 @@ public class UsersResourceTest {
 	
 	//@Test
 	//public void testLogin()
+	
+	@Test
+	public void testUpdateUser() {
+		Client client = Client.create();
+		client.getProperties().put("api_key", TEST_API_KEY);
+		client.getProperties().put("secret_key", TEST_SECRET_KEY);
+		client.addFilter(new HmacClientFilter(client.getProviders()));
+		WebResource webResource = client
+				.resource("http://localhost:9898/users").path(TEST_USERNAME);
+		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+		// test we get 200 back
+		Assert.assertEquals(Response.SC_OK, response.getStatus());
+		User user = response.getEntity(User.class);
+		String oldEmail = user.getEmail();
+		user.setEmail("newEmail@blackhole");
+		response = webResource.type(MediaType.APPLICATION_JSON)
+				.put(ClientResponse.class, user);
+		User updatedUser = response.getEntity(User.class);
+		Assert.assertEquals(Response.SC_OK, response.getStatus());
+		Assert.assertEquals("newEmail@blackhole", updatedUser.getEmail());
+		// revert to original
+		updatedUser.setEmail(oldEmail);
+		response = webResource.type(MediaType.APPLICATION_JSON)
+				.put(ClientResponse.class, user);
+		Assert.assertEquals(Response.SC_OK, response.getStatus());
+	}
 
 }

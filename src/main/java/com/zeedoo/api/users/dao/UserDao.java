@@ -7,7 +7,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.zeedoo.api.users.database.SqlMapper;
 import com.zeedoo.api.users.database.SqlService;
@@ -51,6 +50,18 @@ public class UserDao {
 		SqlMapper mapper = session.getMapper(SqlMapper.class);
 		try {
 			return mapper.getUserByApiKey(apiKey);
+		} finally {
+			session.close();
+		}
+	}
+	
+	public int updateUser(String id, User user) {
+		SqlSessionFactory factory = sqlService.getSessionFactory();
+		// Setting AUTOCOMMIT = true
+		SqlSession session = factory.openSession(true);
+		SqlMapper mapper = session.getMapper(SqlMapper.class);
+		try {
+			return mapper.update(id, user);
 		} finally {
 			session.close();
 		}
