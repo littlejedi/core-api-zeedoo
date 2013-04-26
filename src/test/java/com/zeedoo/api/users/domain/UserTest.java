@@ -1,7 +1,10 @@
 package com.zeedoo.api.users.domain;
 
-import static com.yammer.dropwizard.testing.JsonHelpers.*;
-import static org.hamcrest.Matchers.*;
+import static com.yammer.dropwizard.testing.JsonHelpers.asJson;
+import static com.yammer.dropwizard.testing.JsonHelpers.fromJson;
+import static com.yammer.dropwizard.testing.JsonHelpers.jsonFixture;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 import java.util.UUID;
 

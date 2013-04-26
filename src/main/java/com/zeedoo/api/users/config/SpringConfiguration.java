@@ -2,6 +2,7 @@ package com.zeedoo.api.users.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,6 +14,7 @@ import com.zeedoo.api.users.tasks.AppTask;
  * Represents Spring Configuration
  */
 @Configuration
+@ImportResource({"classpath:applicationContext.xml"})
 public class SpringConfiguration {
 	
 	@Value("${config.env}")

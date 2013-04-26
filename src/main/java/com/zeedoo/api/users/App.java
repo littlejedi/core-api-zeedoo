@@ -19,11 +19,10 @@ import com.zeedoo.api.users.hmac.HmacServerRestrictedProvider;
 
 public class App extends Service<AppConfiguration> {
 	
-	private static final String CONFIGURATION_FILE = "src/main/resources/com/zeedoo/api/users/config/config.yml";
 	private ApplicationContext context;
 
 	public static void main(String[] args) throws Exception {
-		new App().run(new String[] { "server", CONFIGURATION_FILE });
+		new App().run(args);
 	}
 
 	@Override
