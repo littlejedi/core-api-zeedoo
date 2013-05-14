@@ -16,11 +16,12 @@ import com.sun.jersey.api.client.WebResource;
 import com.zeedoo.core.api.App;
 import com.zeedoo.core.api.DropwizardJunitRunner;
 import com.zeedoo.core.api.ServiceConfiguration;
+import com.zeedoo.core.api.TestConstants;
 import com.zeedoo.core.api.client.HmacClientFilter;
 import com.zeedoo.core.api.domain.User;
 
 @RunWith(DropwizardJunitRunner.class)
-@ServiceConfiguration(value = App.class, setting = "src/main/resources/com/zeedoo/core/api/config/config.yml")
+@ServiceConfiguration(value = App.class, setting = TestConstants.TEST_YAML_CONFIG)
 public class UsersResourceTest {
 	
 	private static final String TEST_USER_UUID = "5102e2a9-201c-4a26-8d69-7b8b93f85a55";

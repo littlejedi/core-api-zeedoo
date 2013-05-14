@@ -13,11 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.zeedoo.core.api.config.ConfigConstants;
+
 @Service
 public class SqlService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SqlService.class);
-	private static final String CONFIG_PATH = "com/zeedoo/core/api/database/mybatis-config.xml";
 	private static SqlSessionFactory sqlSessionFactory = null;	
 	
 	@Value("${config.env}")
@@ -27,7 +28,7 @@ public class SqlService {
 	public void init() throws IOException {
 		if (sqlSessionFactory == null) {
 			LOGGER.info("Creating SqlSessionFactory....");
-			InputStream inputStream = Resources.getResourceAsStream(CONFIG_PATH);
+			InputStream inputStream = Resources.getResourceAsStream(ConfigConstants.MYBATIS_CONFIG_FILE);
 	        sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment);
 		}
 	}
