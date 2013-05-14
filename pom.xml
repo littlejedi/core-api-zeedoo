@@ -76,7 +76,7 @@
 			<artifactId>jersey-client</artifactId>
 			<version>1.17.1</version>
 		</dependency>
-
+		
 		<!-- MX4J -->
 		<dependency>
 			<groupId>mx4j</groupId>

@@ -16,6 +16,7 @@ import com.zeedoo.api.users.domain.User;
 import com.zeedoo.api.users.hmac.HmacServerAuthenticator;
 import com.zeedoo.api.users.hmac.HmacServerCredentials;
 import com.zeedoo.api.users.hmac.HmacServerRestrictedProvider;
+import com.zeedoo.api.users.resources.aspect.TimedResourceMethodDispatchAdapter;
 
 public class App extends Service<AppConfiguration> {
 	
@@ -41,6 +42,7 @@ public class App extends Service<AppConfiguration> {
 				.wrap(hmacAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=10m"));
 	    // Providers
 		environment.addProvider(new HmacServerRestrictedProvider<User>(cachingAuthenticator, "REST"));
+		environment.addProvider(new TimedResourceMethodDispatchAdapter());
 	}
 
 	private ConfigurableApplicationContext applicationContext()

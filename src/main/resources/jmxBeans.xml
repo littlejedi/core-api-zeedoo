@@ -26,9 +26,10 @@
 	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter"
 		lazy-init="false" destroy-method="destroy">
 		<property name="beans">
-			<map>
+			<map>			    
 				<!-- The key name is used as the ObjectName of the MBean -->
 				<!-- NOTE: this key name MUST match the code in HttpAdaptorMgr.java -->
+				<!-- Disable this for now, enable it when we need to
 				<entry key="Server:name=HttpAdaptor">
 					<bean class="mx4j.tools.adaptor.http.HttpAdaptor"
 						destroy-method="stop">
@@ -38,7 +39,7 @@
 							<bean class="mx4j.tools.adaptor.http.XSLTProcessor" />
 						</property>
 					</bean>
-				</entry>
+				</entry> -->
 			</map>
 		</property>
 		<property name="server" ref="mbeanServer" />

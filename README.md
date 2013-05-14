@@ -1,4 +1,4 @@
-api-users
+core-api
 =========
 Zeedoo, Inc
-Interal API for User Management
+Core API for internal developer access
