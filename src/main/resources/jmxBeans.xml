@@ -50,7 +50,7 @@
 		<!-- let the HttpAdapter be started after it is registered in the MBeanServer -->
 		<property name="listeners">
 			<list>
-				<bean class="com.zeedoo.api.users.jmx.HttpAdaptorMgr">
+				<bean class="com.zeedoo.core.api.jmx.HttpAdaptorMgr">
 					<property name="mbeanServer" ref="mbeanServer" />
 				</bean>
 			</list>
