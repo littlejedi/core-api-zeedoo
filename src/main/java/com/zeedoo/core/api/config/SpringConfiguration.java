@@ -21,9 +21,18 @@ public class SpringConfiguration {
 	private String env;
 
 	@Value("${config.message}")
-	@JsonProperty
 	private String message;
-
+		
+	// Credentials to talk to UA RESTful API
+	@Value("${config.urbanAirshipApiKey}")
+	private String urbanAirshipApiKey;
+	
+	@Value("${config.urbanAirshipApiSecret}")
+	private String urbanAirshipApiSecret;
+	
+	@Value("${config.urbanAirshipRootPath}")
+	private String urbanAirshipRootPath;
+	
 	@Bean
 	public AppService appService() {
 		return new AppService(message);
@@ -53,5 +62,29 @@ public class SpringConfiguration {
 
 	public void setEnv(String env) {
 		this.env = env;
-	}	
+	}
+	
+	public String getUrbanAirshipApiKey() {
+		return urbanAirshipApiKey;
+	}
+
+	public void setUrbanAirshipApiKey(String urbanAirshipApiKey) {
+		this.urbanAirshipApiKey = urbanAirshipApiKey;
+	}
+
+	public String getUrbanAirshipApiSecret() {
+		return urbanAirshipApiSecret;
+	}
+
+	public void setUrbanAirshipApiSecret(String urbanAirshipApiSecret) {
+		this.urbanAirshipApiSecret = urbanAirshipApiSecret;
+	}
+	
+	public String getUrbanAirshipRootPath() {
+		return urbanAirshipRootPath;
+	}
+
+	public void setUrbanAirshipRootPath(String urbanAirshipRootPath) {
+		this.urbanAirshipRootPath = urbanAirshipRootPath;
+	}
 }
