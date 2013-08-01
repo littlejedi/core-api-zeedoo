@@ -3,7 +3,8 @@ package com.zeedoo.core.api.client;
 public enum UrbanAirshipApiPath {
 	
 	DEVICE_TOKENS("device_tokens"),
-	APIDS("apids");
+	APIDS("apids"),
+	PUSH("push");
 	
 	private String name;
 	

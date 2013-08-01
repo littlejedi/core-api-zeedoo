@@ -2,92 +2,81 @@ package com.zeedoo.core.api.dao;
 
 import java.util.UUID;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Preconditions;
-import com.zeedoo.core.api.database.SqlMapper;
 import com.zeedoo.core.api.database.SqlService;
-import com.zeedoo.core.api.domain.User;
+import com.zeedoo.core.api.database.UserMapper;
+import com.zeedoo.core.api.database.transaction.Transactional;
+import com.zeedoo.core.domain.User;
 
 @Component
 public class UserDao {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
+	
 	@Autowired
-	SqlService sqlService;
+	private SqlService sqlService;
 	
+	@Transactional
 	public User get(UUID uuid) {
-		Preconditions.checkArgument(uuid != null);
-		SqlSessionFactory factory = sqlService.getSessionFactory();
-		SqlSession session = factory.openSession(true);
-		SqlMapper mapper = session.getMapper(SqlMapper.class);
-		try {
-			return mapper.get(uuid);
-		} finally {
-			session.close();
-		}
+		Preconditions.checkArgument(uuid != null, "UUID is required!");
+		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+        return mapper.get(uuid);
 	}
 	
-	//TODO: figure out how to time this
+	@Transactional
 	public User getUserByUsername(String username) {
-		Preconditions.checkArgument(username != null);
-		SqlSessionFactory factory = sqlService.getSessionFactory();
-		SqlSession session = factory.openSession(true);
-		SqlMapper mapper = session.getMapper(SqlMapper.class);
-		try {
-			return mapper.getUserByUsername(username);
-		} finally {
-			session.close();
-		}
+		Preconditions.checkArgument(username != null, "Username is required!");
+		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+        return mapper.getUserByUsername(username);
 	}
 	
-	public User getUserByApiKey(String apiKey) {
-		Preconditions.checkArgument(apiKey != null);
-		SqlSessionFactory factory = sqlService.getSessionFactory();
-		SqlSession session = factory.openSession(true);
-		SqlMapper mapper = session.getMapper(SqlMapper.class);
-		try {
-			return mapper.getUserByApiKey(apiKey);
-		} finally {
-			session.close();
+	@Transactional
+	public int updateLastLoginDate(String id) {
+		Preconditions.checkArgument(id != null, "User Username / UUID is required!");
+		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+		int result = mapper.updateLastLoginDate(id);
+		if (result == 0) {
+			LOGGER.warn("Update Last Login Date did not affect user {}", id);
 		}
+		return result;
 	}
 	
+	@Transactional
+	public int updateLastLogoutDate(String id) {
+		Preconditions.checkArgument(id != null, "User Username / UUID is required!");
+		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+	    int result = mapper.updateLastLogoutDate(id);
+		if (result == 0) {
+			LOGGER.warn("Update Last Logout Date did not affect user {}", id);
+		}
+	    return result;
+	}
+		
+	@Transactional
 	public int updateUser(String id, User user) {
-		SqlSessionFactory factory = sqlService.getSessionFactory();
-		// Setting AUTOCOMMIT = true
-		SqlSession session = factory.openSession(true);
-		SqlMapper mapper = session.getMapper(SqlMapper.class);
-		try {
-			return mapper.update(id, user);
-		} finally {
-			session.close();
-		}
+		Preconditions.checkArgument(id != null, "User Username / UUID is required!");
+		Preconditions.checkArgument(user != null, "User object is required!");
+		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+		return mapper.update(id, user);
 	}
 	
+	@Transactional
 	public int insertUser(User user) {
-		SqlSessionFactory factory = sqlService.getSessionFactory();
-		// Setting AUTOCOMMIT = TRUE ensures the update goes through
-		SqlSession session = factory.openSession(true);
-		SqlMapper mapper = session.getMapper(SqlMapper.class);
-		try {
-			return mapper.insert(user);
-		} finally {
-			session.close();
-		}
+		Preconditions.checkArgument(user != null, "User object is required!");
+		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+		return mapper.insert(user);
 	}
 	
+	@Transactional
 	public int deleteUserByUsername(String username) {
-		SqlSessionFactory factory = sqlService.getSessionFactory();
-		SqlSession session = factory.openSession(true);
-		SqlMapper mapper = session.getMapper(SqlMapper.class);
-		try {
-			return mapper.deleteUserByUsername(username);
-		} finally {
-			session.close();
-		}
+		Preconditions.checkArgument(username != null, "User Username is required!");
+		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+		return mapper.deleteUserByUsername(username);
 	}
 	
 	public SqlService getSqlService() {

@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.jasypt.util.password.BasicPasswordEncryptor;
@@ -23,10 +24,11 @@ import org.springframework.stereotype.Component;
 import com.google.common.base.Optional;
 import com.yammer.metrics.annotation.Timed;
 import com.zeedoo.core.api.dao.UserDao;
-import com.zeedoo.core.api.domain.User;
-import com.zeedoo.core.api.domain.UserCredentials;
 import com.zeedoo.core.api.hmac.Restricted;
 import com.zeedoo.core.api.utils.UuidUtils;
+import com.zeedoo.core.domain.ApiToken;
+import com.zeedoo.core.domain.User;
+import com.zeedoo.core.domain.UserCredentials;
 
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -48,7 +50,7 @@ public class UsersResource {
 	@Path("{id}")
 	@GET
 	@Timed
-	public User doGet(@Restricted User adminUser, @PathParam("id") String id) {
+	public User doGet(@Restricted ApiToken apiToken, @PathParam("id") String id) {
 		Optional<User> user = Optional.absent();
 		// Check if this is UUID
 		if (UuidUtils.isValidUUIDString(id)) {
@@ -74,12 +76,12 @@ public class UsersResource {
 	@Path("{id}")
 	@PUT
 	@Timed
-	public User doPut(@Restricted User adminUser, @PathParam("id") String id, User user) {
+	public User doPut(@Restricted ApiToken apiToken, @PathParam("id") String id, User user) {
         int result = userDao.updateUser(id, user);
         if (result == 0) {
         	throw new WebApplicationException(Status.NOT_FOUND);
         } else{
-        	return this.doGet(adminUser, id);
+        	return this.doGet(apiToken, id);
         }
 	}
 
@@ -87,14 +89,15 @@ public class UsersResource {
 	@Path("/login")
 	@POST
 	@Timed
-	public User doLogin(@Restricted User adminUser, @Valid UserCredentials credz) {
+	public User doLogin(@Restricted ApiToken apiToken, @Valid UserCredentials credz) {
 		Optional<User> user = Optional.fromNullable(userDao.getUserByUsername(credz.getUsername()));
 		if (user.isPresent()) {
 			BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
 			// get the digest for this user
 			String encryptedPassword = user.get().getPassword();
 			if (passwordEncryptor.checkPassword(credz.getPassword(), encryptedPassword)) {
-				// we have verified the creds are correct, return this user
+				// we have verified the credz are correct, update the timestamp and return this user
+				userDao.updateLastLoginDate(credz.getUsername());
 				return user.get();
 			} else {
 				// bad login!
@@ -104,13 +107,27 @@ public class UsersResource {
 			throw new WebApplicationException(Status.NOT_FOUND);
 		}
 	}
-
+	
+	// Log out
+	@Path("/logout/{id}")
+	@POST
+	@Timed
+	public Response doLogout(@Restricted ApiToken apiToken, @PathParam("id") String id) {
+		Optional<User> user = Optional.fromNullable(userDao.getUserByUsername(id));
+		if (user.isPresent()) {
+			userDao.updateLastLogoutDate(id);
+			return Response.ok(String.format("User %s Log Out successful", id)).build();
+		} else {
+			throw new WebApplicationException(Status.NOT_FOUND);
+		}
+	}
+	
 	// Register
 	@Path("/register")
 	@POST
 	@Timed
-	public User doRegister(@Restricted User adminUser, @Valid User user) {
-		LOGGER.info("Register User: {}", user.toString());
+	public User doRegister(@Restricted ApiToken apiToken, @Valid User user) {
+		LOGGER.info("Registering User: {}", user.toString());
 		// User should be already validated by annotation
 		// Encrypt the password
 		BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();

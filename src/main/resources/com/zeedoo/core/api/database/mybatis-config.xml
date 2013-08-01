@@ -23,6 +23,8 @@
 	</environments>
 
 	<mappers>
-		<mapper resource="com/zeedoo/core/api/database/mapper.xml" />
+		<mapper resource="com/zeedoo/core/api/database/apiTokenMapper.xml" />
+		<mapper resource="com/zeedoo/core/api/database/deviceTokenMapper.xml" />
+	    <mapper resource="com/zeedoo/core/api/database/userMapper.xml" />
 	</mappers>
 </configuration>

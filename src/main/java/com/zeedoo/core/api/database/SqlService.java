@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.session.SqlSessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,23 +21,28 @@ public class SqlService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SqlService.class);
 	private static SqlSessionFactory sqlSessionFactory = null;	
+	private static SqlSessionManager sqlSessionManager = null;
 	
 	@Value("${config.env}")
 	private String environment;
 	
 	@PostConstruct
 	public void init() throws IOException {
-		if (sqlSessionFactory == null) {
-			LOGGER.info("Creating SqlSessionFactory....");
-			InputStream inputStream = Resources.getResourceAsStream(ConfigConstants.MYBATIS_CONFIG_FILE);
-	        sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment);
-		}
+	    LOGGER.info("Creating SqlSessionFactory....");
+	    InputStream inputStream = Resources.getResourceAsStream(ConfigConstants.MYBATIS_CONFIG_FILE);
+	    sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment);
+	    LOGGER.info("Creating SqlSessionManager....");
+	    sqlSessionManager = SqlSessionManager.newInstance(sqlSessionFactory);
 	}
     
 	public SqlSessionFactory getSessionFactory() {
 	    return sqlSessionFactory;
 	}
-
+		
+	public <T> T getMapper(Class<T> clazz) {
+		return sqlSessionManager.getMapper(clazz);
+	}
+	
 	public String getEnvironment() {
 		return environment;
 	}

@@ -19,6 +19,10 @@ http:
 
       # If true, log requests to stdout.
       enabled: false
+  # SSL
+  #ssl:
+  #  keyStore: ./example.keystore
+  #  keyStorePassword: example
       
  # Logging settings.
 logging:
@@ -33,3 +37,12 @@ config:
 
   # The hello message to display at http://localhost:9898/hello
   message: Welcome to the hello application !!!
+  
+  # Urban Airship API key
+  urbanAirshipApiKey: KXhrEtypS1Or_NIe5F4rkA
+  
+  # Urban Airship API secret
+  urbanAirshipApiSecret: L7CHzQ-pQBKNWsuuJVsu6w
+  
+  # Urban Airship Root Path
+  urbanAirshipRootPath: https://go.urbanairship.com/api

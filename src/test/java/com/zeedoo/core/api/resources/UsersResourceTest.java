@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 import junit.framework.Assert;
 
 import org.eclipse.jetty.server.Response;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -18,7 +19,8 @@ import com.zeedoo.core.api.DropwizardJunitRunner;
 import com.zeedoo.core.api.ServiceConfiguration;
 import com.zeedoo.core.api.TestConstants;
 import com.zeedoo.core.api.client.HmacClientFilter;
-import com.zeedoo.core.api.domain.User;
+import com.zeedoo.core.domain.User;
+import com.zeedoo.core.domain.UserCredentials;
 
 @RunWith(DropwizardJunitRunner.class)
 @ServiceConfiguration(value = App.class, setting = TestConstants.TEST_YAML_CONFIG)
@@ -28,13 +30,18 @@ public class UsersResourceTest {
 	private static final String TEST_USERNAME = "littlejedi";
 	private static final String TEST_API_KEY = "dev";
 	private static final String TEST_SECRET_KEY = "6fdd1400-a709-11e2-9e96-0800200c9a66";
+	private Client client;
 	
-	@Test
-	public void testRegisterUser() {
-		Client client = Client.create();
+	@Before
+	public void setUp() {
+		client = Client.create();
 		client.getProperties().put("api_key", TEST_API_KEY);
 		client.getProperties().put("secret_key", TEST_SECRET_KEY);
 		client.addFilter(new HmacClientFilter(client.getProviders()));
+	}
+	
+	@Test
+	public void testRegisterUser() {
 		WebResource webResource = client
 				.resource("http://localhost:9898/users/register");
 		UUID uuid = UUID.randomUUID();
@@ -54,10 +61,6 @@ public class UsersResourceTest {
 	@Test
 	public void testGetUser() {
 		// GET by username
-		Client client = Client.create();
-		client.getProperties().put("api_key", TEST_API_KEY);
-		client.getProperties().put("secret_key", TEST_SECRET_KEY);
-		client.addFilter(new HmacClientFilter(client.getProviders()));
 		WebResource webResource = client
 				.resource("http://localhost:9898/users").path(TEST_USERNAME);
 		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -76,15 +79,30 @@ public class UsersResourceTest {
 		Assert.assertEquals("littlejedi", user.getUsername());
 	}
 	
-	//@Test
-	//public void testLogin()
+	@Test
+	public void testLogin() {
+		WebResource webResource = client
+				.resource("http://localhost:9898/users/login");
+		UserCredentials credz = new UserCredentials("bf9ea89acbf042c88b3c37a1869f0cd7", "test123");		
+		ClientResponse response = webResource.type(MediaType.APPLICATION_JSON)
+				.post(ClientResponse.class, credz);
+		
+		Assert.assertEquals(Response.SC_OK, response.getStatus());
+	}
+	
+	@Test
+	public void testLogout() {
+		WebResource webResource = client
+				.resource("http://localhost:9898/users/logout/" + "bf9ea89acbf042c88b3c37a1869f0cd7");	
+		ClientResponse response = webResource.type(MediaType.APPLICATION_JSON)
+				.post(ClientResponse.class);
+		
+		Assert.assertEquals(Response.SC_OK, response.getStatus());
+	}
+	
 	
 	@Test
 	public void testUpdateUser() {
-		Client client = Client.create();
-		client.getProperties().put("api_key", TEST_API_KEY);
-		client.getProperties().put("secret_key", TEST_SECRET_KEY);
-		client.addFilter(new HmacClientFilter(client.getProviders()));
 		WebResource webResource = client
 				.resource("http://localhost:9898/users").path(TEST_USERNAME);
 		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);

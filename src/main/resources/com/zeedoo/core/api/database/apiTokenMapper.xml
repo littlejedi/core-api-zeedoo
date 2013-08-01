@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zeedoo.core.api.database.ApiTokenMapper">
+	<resultMap type="com.zeedoo.core.domain.ApiToken" id="apiTokenMap">
+	    <result column="api_key" property="apiKey" />
+	    <result column="api_secret" property="apiSecret" />
+	</resultMap>
+
+	<select id="getApiToken" resultMap="apiTokenMap">
+		SELECT * FROM developer
+		WHERE api_key = #{apiKey}
+	</select>
+</mapper>

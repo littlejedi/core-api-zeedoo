@@ -8,24 +8,20 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.zeedoo.core.api.dao.UserDao;
-import com.zeedoo.core.api.database.SqlService;
-import com.zeedoo.core.api.domain.User;
+import com.zeedoo.core.domain.User;
 
-//TODO: Use this as BaseDaoTest
 public class UserDaoTest {
 	
 	private static final String TEST_USER_UUID = "5102e2a9-201c-4a26-8d69-7b8b93f85a55";
 	private static final String TEST_USERNAME = "littlejedi";
 	
-	protected SqlService sqlService;
-	private UserDao userDao;
+	protected final SqlService sqlService = new SqlService();
+	protected final UserDao userDao = new UserDao();
 
 	@Before
 	public void setUp() throws Exception {
-		sqlService = new SqlService();
 		sqlService.setEnvironment("dev");
 		sqlService.init();
-		userDao = new UserDao();
 		userDao.setSqlService(sqlService);
 	}
 

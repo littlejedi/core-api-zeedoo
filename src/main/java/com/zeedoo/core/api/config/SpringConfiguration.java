@@ -2,6 +2,7 @@ package com.zeedoo.core.api.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +15,7 @@ import com.zeedoo.core.api.tasks.AppTask;
  * Represents Spring Configuration
  */
 @Configuration
+@EnableAspectJAutoProxy
 @ImportResource({"classpath:applicationContext.xml"})
 public class SpringConfiguration {
 	

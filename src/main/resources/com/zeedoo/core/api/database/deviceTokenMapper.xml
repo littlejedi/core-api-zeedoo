@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zeedoo.core.api.database.DeviceTokenMapper">
+	<resultMap type="com.zeedoo.core.domain.DeviceToken" id="deviceTokenMap">
+	    <result column="dev_id" property="id" />
+	    <result column="dev_token_id" property="tokenId" />
+	    <result column="dev_use_username" property="username" />
+	    <result column="dev_nickname" property="nickname" />
+	</resultMap>
+		
+	<insert id="registerDeviceToken">
+	    INSERT INTO device_tokens (dev_token_id, dev_use_username, dev_active_status, dev_registration_date)
+	    values
+	    (#{device.tokenId},#{device.username},1,UTC_TIMESTAMP())
+	</insert>
+
+	<update id="unregisterDeviceToken">
+		UPDATE device_tokens SET
+		  dev_active_status = 0
+		WHERE dev_token_id = #{tokenId}
+	</update>
+	
+	<delete id="deleteDeviceToken">
+	    DELETE FROM device_tokens
+	    WHERE dev_token_id = #{tokenId}
+	</delete>
+</mapper>

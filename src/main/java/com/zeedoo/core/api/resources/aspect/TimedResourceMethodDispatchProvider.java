@@ -1,15 +1,10 @@
 package com.zeedoo.core.api.resources.aspect;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map.Entry;
-
-import javax.ws.rs.core.PathSegment;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Joiner;
 import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.api.model.AbstractResourceMethod;
 import com.sun.jersey.spi.container.ResourceMethodDispatchProvider;

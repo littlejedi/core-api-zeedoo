@@ -9,6 +9,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.2.1.RELEASE</spring.version>
 		<dropwizard.version>0.6.2</dropwizard.version>
+		<core.domain.version>0.12</core.domain.version>
 	</properties>
 
 	<repositories>
@@ -37,6 +38,13 @@
 			<artifactId>dropwizard-testing</artifactId>
 			<version>${dropwizard.version}</version>
 		</dependency>
+		
+		<!-- Zeedoo core domain -->
+        <dependency>
+            <groupId>com.zeedoo</groupId>
+            <artifactId>core-domain</artifactId>
+            <version>${core.domain.version}</version>
+        </dependency>
 
 		<!-- Dropwizard and Spring integration -->
 		<dependency>
@@ -58,6 +66,25 @@
 			<version>2.2.2.RELEASE</version>
 		</dependency>
 
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.6.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>1.6.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
@@ -76,7 +103,7 @@
 			<artifactId>jersey-client</artifactId>
 			<version>1.17.1</version>
 		</dependency>
-		
+
 		<!-- MX4J -->
 		<dependency>
 			<groupId>mx4j</groupId>
@@ -129,10 +156,12 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>3.1</version>
 				<configuration>
-					<source />
-					<target />
+				<!-- Compile for Java 1.7 -->
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<plugin>

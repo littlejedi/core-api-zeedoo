@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
-import com.zeedoo.core.api.dao.UserDao;
-import com.zeedoo.core.api.domain.User;
+import com.zeedoo.core.api.dao.ApiTokenDao;
 import com.zeedoo.core.api.hmac.utils.HmacUtils;
+import com.zeedoo.core.domain.ApiToken;
 
 /**
  * <p>Authenticator to provide the following to application:</p>
@@ -20,26 +20,25 @@ import com.zeedoo.core.api.hmac.utils.HmacUtils;
  *
  */
 @Component
-public class HmacServerAuthenticator implements Authenticator<HmacServerCredentials, User> {
+public class HmacServerAuthenticator implements Authenticator<HmacServerCredentials, ApiToken> {
 	
   private final Logger LOGGER = LoggerFactory.getLogger(HmacServerAuthenticator.class);
 
   @Autowired
-  private UserDao userDao;
+  private ApiTokenDao apiTokenDao;
 
   @Override
-  public Optional<User> authenticate(HmacServerCredentials credentials) throws AuthenticationException {
+  public Optional<ApiToken> authenticate(HmacServerCredentials credentials) throws AuthenticationException {
      	    
-    // Get the User referred to by the API key
-    Optional<User> user = Optional.fromNullable(userDao.getUserByApiKey(credentials.getApiKey()));
-    if (!user.isPresent()) {
+    // Get the API token referred to by the API key
+    Optional<ApiToken> apiToken = Optional.fromNullable(apiTokenDao.getApiToken(credentials.getApiKey()));
+    if (!apiToken.isPresent()) {
       return Optional.absent();
     }
     
-    // Locate their secret key
-    Optional<String> secretKey = Optional.fromNullable(user.get().getSecretKey());
-    if (!secretKey.isPresent()) {
-    	LOGGER.warn("User {0} has an API but a null secret key", user.get().getUsername());
+    // Check their secret key
+    if (apiToken.get().getApiSecret() == null) {
+    	LOGGER.error("App {0} has a null secret key!", apiToken.get().getApiKey());
     	return Optional.absent();
     }
 
@@ -47,19 +46,19 @@ public class HmacServerAuthenticator implements Authenticator<HmacServerCredenti
       HmacUtils.computeSignature(
         credentials.getAlgorithm(),
         credentials.getCanonicalRepresentation(),
-        secretKey.get()));
+        apiToken.get().getApiSecret()));
        
     // Avoid timing attacks by verifying every byte every time
     if (isEqual(computedSignature.getBytes(), credentials.getDigest().getBytes())) {
-      return user;
+      return apiToken;
     }
 
     return Optional.absent();
 
   }
 
-  public void setUserDao(UserDao userDao) {
-    this.userDao = userDao;
+  public void setApiTokenDao(ApiTokenDao dao) {
+    this.apiTokenDao = dao;
   }
 
   /**

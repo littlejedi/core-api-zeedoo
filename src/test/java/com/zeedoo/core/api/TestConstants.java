@@ -7,6 +7,6 @@ package com.zeedoo.core.api;
  */
 public class TestConstants {
 	
-	public static final String TEST_YAML_CONFIG = "src/main/resources/com/zeedoo/core/api/config/config.yml";
+	public static final String TEST_YAML_CONFIG = "src/test/resources/config.yml";
 
 }

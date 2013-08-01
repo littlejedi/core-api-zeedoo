@@ -47,7 +47,7 @@ public class UrbanAirshipClient {
 	// Register an Apple Device Token using Urban Airship API
 	// PUT /api/device_tokens/{deviceToken}
 	// http://docs.urbanairship.com/reference/api/registration.html
-	public void registerDeviceToken(String deviceToken, String userName) {
+	public boolean registerDeviceToken(String deviceToken, String userName) {
 		Map<String, String> payload = new HashMap<String, String>();
 		payload.put("alias", userName);
 		ObjectMapper mapper = new ObjectMapper();
@@ -58,22 +58,46 @@ public class UrbanAirshipClient {
 					.type(MediaType.APPLICATION_JSON)
 					.put(ClientResponse.class, payloadString);
 			LOGGER.info(response.toString());
+			if (response.getStatus() == ClientResponse.Status.OK.getStatusCode() || response.getStatus() == ClientResponse.Status.CREATED.getStatusCode()) {
+				return true;
+			} else {
+				LOGGER.error("Unable to register device token on Urban Airship for deviceToken = {}, userName = {}!", deviceToken, userName);
+				return false;
+			}
 		} catch (JsonProcessingException e) {
 			LOGGER.error("Error converting payload to JSON String {}", e);
 		}
+		return false;
 	}
 	
 	// Unregister an Apple Device Token
-	public void unregisterDeviceToken(String deviceToken) {
+	public boolean unregisterDeviceToken(String deviceToken) {
 		ClientResponse response = resource.path(UrbanAirshipApiPath.DEVICE_TOKENS.getName())
 				.path(deviceToken)
 				.delete(ClientResponse.class);
 		LOGGER.info(response.toString());
+		if (response.getStatus() == ClientResponse.Status.NO_CONTENT.getStatusCode()) {
+			return true;
+		} else {
+			LOGGER.error("Unable to un-register device token on Urban Airship for deviceToken = {}", deviceToken);
+			return false;
+		}
 	}
 	
 	// Register an Android APID
 	public void registerAPID(String apid, String username) {
-		
+		//TODO: Implement
 	}
+	
+	// Send an iOS Push
+    //FIXME: Implement
+	public boolean sendiOSPushNotification() {
+		ClientResponse response = resource.path(UrbanAirshipApiPath.PUSH.getName())
+		        .type(MediaType.APPLICATION_JSON)
+		        .post(ClientResponse.class, "");
+		return true;
+	}
+	
+	// Send an Android Push
 }
 
