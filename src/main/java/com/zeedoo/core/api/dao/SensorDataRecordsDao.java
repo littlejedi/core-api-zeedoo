@@ -31,8 +31,8 @@ public class SensorDataRecordsDao extends EntityDao<SensorDataRecordsMapper> {
 	public List<SensorDataRecord> get(String sensorId, DateTime start, DateTime end) {
 		Preconditions.checkArgument(sensorId != null, "Sensor Id should not be null");
 		SensorDataRecordsMapper mapper = getMapper();
-		Date startDate = start != null? start.toDate() : null;
-		Date endDate = end != null? end.toDate() : null;
+		Long startDate = unixTimestampFromDateTime(start);
+		Long endDate = unixTimestampFromDateTime(end);
 		return mapper.get(sensorId, startDate, endDate);
 	}
 	
@@ -48,14 +48,22 @@ public class SensorDataRecordsDao extends EntityDao<SensorDataRecordsMapper> {
 	public int delete(String sensorId, DateTime start, DateTime end) {
     	Preconditions.checkArgument(sensorId != null, "Sensor Id should not be null");
     	SensorDataRecordsMapper mapper = getMapper();
-    	Date startDate = start != null? start.toDate() : null;
-		Date endDate = end != null? end.toDate() : null;
+    	Long startDate = unixTimestampFromDateTime(start);
+		Long endDate = unixTimestampFromDateTime(end);
 		return mapper.delete(sensorId, startDate, endDate);
 	}
 
 	@Override
 	protected SensorDataRecordsMapper getMapper() {
 		return databaseService.getMapper(SensorDataRecordsMapper.class);
+	}
+	
+	public Long unixTimestampFromDateTime(DateTime dateTime) {
+		if (dateTime == null) {
+			return null;
+		}
+		// Divide by 1000L to get the unix stamp
+	    return dateTime.getMillis() / 1000L;
 	}
 
 }

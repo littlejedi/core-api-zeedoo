@@ -10,7 +10,7 @@ import com.zeedoo.commons.domain.SensorDataRecord;
 public interface SensorDataRecordsMapper extends Mapper {
 	
 	List<SensorDataRecord> get(@Param(value = "sensorId") String sensorId, 
-			@Param(value = "start") Date start, @Param(value = "end") Date end);
+			@Param(value = "start") Long start, @Param(value = "end") Long end);
 	
 	// Insert(update) the sensor data record with the given payload
 	int insert(@Param(value = "record") SensorDataRecord record);
@@ -20,5 +20,5 @@ public interface SensorDataRecordsMapper extends Mapper {
 	
 	// Delete data in the record
 	int delete(@Param(value = "sensorId") String sensorId, 
-			@Param(value = "start") Date start, @Param(value = "end") Date end);	
+			@Param(value = "start") Long start, @Param(value = "end") Long end);	
 }

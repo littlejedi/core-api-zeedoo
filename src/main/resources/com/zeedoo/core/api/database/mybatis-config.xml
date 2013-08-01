@@ -7,6 +7,8 @@
 	</properties>
 	
 	<typeHandlers>
+	    <typeHandler handler="com.zeedoo.commons.mybatis.DateTimeTypeHandler" javaType="org.joda.time.DateTime"/>
+        <typeHandler handler="com.zeedoo.commons.mybatis.HasValueEnumTypeHandler" javaType="com.zeedoo.commons.domain.DeviceStatus"/>
 		<typeHandler handler="com.zeedoo.commons.mybatis.UUIDTypeHandler" javaType="java.util.UUID"/>
 	</typeHandlers>
 
@@ -25,6 +27,7 @@
 	<mappers>
 		<mapper resource="com/zeedoo/core/api/database/apiTokenMapper.xml" />
 		<mapper resource="com/zeedoo/core/api/database/deviceTokenMapper.xml" />
+		<mapper resource="com/zeedoo/core/api/database/sensorDataRecordsMapper.xml" />
 	    <mapper resource="com/zeedoo/core/api/database/userMapper.xml" />
 	</mappers>
 </configuration>

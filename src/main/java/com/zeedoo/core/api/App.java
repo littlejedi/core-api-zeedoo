@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.github.nhuray.dropwizard.spring.SpringBundle;
 import com.google.common.cache.CacheBuilderSpec;
 import com.yammer.dropwizard.Service;
@@ -44,6 +45,9 @@ public class App extends Service<AppConfiguration> {
 	    // Providers
 		environment.addProvider(new HmacServerRestrictedProvider<ApiToken>(cachingAuthenticator, "REST"));
 		environment.addProvider(new TimedResourceMethodDispatchAdapter());
+		// Important - This makes Jackson writes out actual dates rather than timestamps for Joda DateTime objects
+		environment.getObjectMapperFactory().disable(
+		        com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 	}
 
 	private ConfigurableApplicationContext applicationContext()
