@@ -7,7 +7,7 @@ import com.google.common.base.Preconditions;
 import com.zeedoo.core.api.database.ApiTokenMapper;
 import com.zeedoo.core.api.database.SqlService;
 import com.zeedoo.core.api.database.transaction.Transactional;
-import com.zeedoo.core.domain.ApiToken;
+import com.zeedoo.commons.domain.ApiToken;
 
 /**
  * Access API-Token related data from database
@@ -15,7 +15,7 @@ import com.zeedoo.core.domain.ApiToken;
  *
  */
 @Component
-public class ApiTokenDao {
+public class ApiTokenDao extends EntityDao<ApiTokenMapper>{
 	
 	@Autowired
 	private SqlService sqlService;
@@ -23,8 +23,13 @@ public class ApiTokenDao {
 	@Transactional
 	public ApiToken getApiToken(String apiKey) {
 		Preconditions.checkArgument(apiKey != null);
-		ApiTokenMapper mapper = sqlService.getMapper(ApiTokenMapper.class);
+		ApiTokenMapper mapper = getMapper();
 		return mapper.getApiToken(apiKey);
+	}
+
+	@Override
+	protected ApiTokenMapper getMapper() {
+		return sqlService.getMapper(ApiTokenMapper.class);
 	}
 
 }

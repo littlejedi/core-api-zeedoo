@@ -10,7 +10,7 @@ import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import com.zeedoo.core.api.dao.ApiTokenDao;
 import com.zeedoo.core.api.hmac.utils.HmacUtils;
-import com.zeedoo.core.domain.ApiToken;
+import com.zeedoo.commons.domain.ApiToken;
 
 /**
  * <p>Authenticator to provide the following to application:</p>

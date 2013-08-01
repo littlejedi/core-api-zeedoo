@@ -26,9 +26,9 @@ import com.yammer.metrics.annotation.Timed;
 import com.zeedoo.core.api.dao.UserDao;
 import com.zeedoo.core.api.hmac.Restricted;
 import com.zeedoo.core.api.utils.UuidUtils;
-import com.zeedoo.core.domain.ApiToken;
-import com.zeedoo.core.domain.User;
-import com.zeedoo.core.domain.UserCredentials;
+import com.zeedoo.commons.domain.ApiToken;
+import com.zeedoo.commons.domain.User;
+import com.zeedoo.commons.domain.UserCredentials;
 
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -36,8 +36,7 @@ import com.zeedoo.core.domain.UserCredentials;
 @Component
 public class UsersResource {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(UsersResource.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UsersResource.class);
 
 	@Autowired
 	private UserDao userDao;

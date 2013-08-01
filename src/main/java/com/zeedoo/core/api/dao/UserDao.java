@@ -11,10 +11,10 @@ import com.google.common.base.Preconditions;
 import com.zeedoo.core.api.database.SqlService;
 import com.zeedoo.core.api.database.UserMapper;
 import com.zeedoo.core.api.database.transaction.Transactional;
-import com.zeedoo.core.domain.User;
+import com.zeedoo.commons.domain.User;
 
 @Component
-public class UserDao {
+public class UserDao extends EntityDao<UserMapper> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
 	
@@ -24,21 +24,21 @@ public class UserDao {
 	@Transactional
 	public User get(UUID uuid) {
 		Preconditions.checkArgument(uuid != null, "UUID is required!");
-		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+		UserMapper mapper = getMapper();
         return mapper.get(uuid);
 	}
 	
 	@Transactional
 	public User getUserByUsername(String username) {
 		Preconditions.checkArgument(username != null, "Username is required!");
-		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+		UserMapper mapper = getMapper();
         return mapper.getUserByUsername(username);
 	}
 	
 	@Transactional
 	public int updateLastLoginDate(String id) {
 		Preconditions.checkArgument(id != null, "User Username / UUID is required!");
-		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+		UserMapper mapper = getMapper();
 		int result = mapper.updateLastLoginDate(id);
 		if (result == 0) {
 			LOGGER.warn("Update Last Login Date did not affect user {}", id);
@@ -49,7 +49,7 @@ public class UserDao {
 	@Transactional
 	public int updateLastLogoutDate(String id) {
 		Preconditions.checkArgument(id != null, "User Username / UUID is required!");
-		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+		UserMapper mapper = getMapper();
 	    int result = mapper.updateLastLogoutDate(id);
 		if (result == 0) {
 			LOGGER.warn("Update Last Logout Date did not affect user {}", id);
@@ -61,21 +61,21 @@ public class UserDao {
 	public int updateUser(String id, User user) {
 		Preconditions.checkArgument(id != null, "User Username / UUID is required!");
 		Preconditions.checkArgument(user != null, "User object is required!");
-		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+		UserMapper mapper = getMapper();
 		return mapper.update(id, user);
 	}
 	
 	@Transactional
 	public int insertUser(User user) {
 		Preconditions.checkArgument(user != null, "User object is required!");
-		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+		UserMapper mapper = getMapper();
 		return mapper.insert(user);
 	}
 	
 	@Transactional
 	public int deleteUserByUsername(String username) {
 		Preconditions.checkArgument(username != null, "User Username is required!");
-		UserMapper mapper = sqlService.getMapper(UserMapper.class);
+		UserMapper mapper = getMapper();
 		return mapper.deleteUserByUsername(username);
 	}
 	
@@ -85,5 +85,10 @@ public class UserDao {
 
 	public void setSqlService(SqlService sqlService) {
 		this.sqlService = sqlService;
+	}
+
+	@Override
+	protected UserMapper getMapper() {
+		return sqlService.getMapper(UserMapper.class);
 	}	
 }

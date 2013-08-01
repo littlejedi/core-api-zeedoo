@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zeedoo.core.api.database.ApiTokenMapper">
-	<resultMap type="com.zeedoo.core.domain.ApiToken" id="apiTokenMap">
+	<resultMap type="com.zeedoo.commons.domain.ApiToken" id="apiTokenMap">
 	    <result column="api_key" property="apiKey" />
 	    <result column="api_secret" property="apiSecret" />
 	</resultMap>

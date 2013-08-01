@@ -17,7 +17,7 @@ import com.zeedoo.core.api.hmac.HmacServerAuthenticator;
 import com.zeedoo.core.api.hmac.HmacServerCredentials;
 import com.zeedoo.core.api.hmac.HmacServerRestrictedProvider;
 import com.zeedoo.core.api.resources.aspect.TimedResourceMethodDispatchAdapter;
-import com.zeedoo.core.domain.ApiToken;
+import com.zeedoo.commons.domain.ApiToken;
 
 public class App extends Service<AppConfiguration> {
 		

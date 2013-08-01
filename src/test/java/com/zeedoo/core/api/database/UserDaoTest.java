@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.zeedoo.core.api.dao.UserDao;
-import com.zeedoo.core.domain.User;
+import com.zeedoo.commons.domain.User;
 
 public class UserDaoTest {
 	

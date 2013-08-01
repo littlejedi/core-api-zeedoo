@@ -4,9 +4,9 @@ import java.util.UUID;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.zeedoo.core.domain.User;
+import com.zeedoo.commons.domain.User;
 
-public interface UserMapper {
+public interface UserMapper extends Mapper{
 	
 	/**
 	 * Users

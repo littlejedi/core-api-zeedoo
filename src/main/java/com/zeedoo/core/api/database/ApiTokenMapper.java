@@ -2,9 +2,9 @@ package com.zeedoo.core.api.database;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.zeedoo.core.domain.ApiToken;
+import com.zeedoo.commons.domain.ApiToken;
 
-public interface ApiTokenMapper {
+public interface ApiTokenMapper extends Mapper {
 		
 	/** 
 	 * API Tokens

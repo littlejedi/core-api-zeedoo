@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zeedoo.core.api.database.UserMapper">
-	<resultMap type="com.zeedoo.core.domain.User" id="userMap">
+	<resultMap type="com.zeedoo.commons.domain.User" id="userMap">
 		<result column="use_username" property="username" />
 		<result column="use_password" property="password" />
 		<result column="use_email" property="email" />
@@ -16,7 +16,7 @@
 		<result column="use_last_logout_date" property="lastLogoutDate" />
 	</resultMap>
 	
-	<resultMap type="com.zeedoo.core.domain.ApiToken" id="apiTokenMap">
+	<resultMap type="com.zeedoo.commons.domain.ApiToken" id="apiTokenMap">
 	    <result column="api_key" property="apiKey" />
 	    <result column="api_secret" property="apiSecret" />
 	</resultMap>

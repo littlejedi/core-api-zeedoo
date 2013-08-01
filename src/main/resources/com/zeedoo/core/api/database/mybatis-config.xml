@@ -7,7 +7,7 @@
 	</properties>
 	
 	<typeHandlers>
-		<typeHandler handler="com.zeedoo.core.api.database.UUIDTypeHandler" javaType="java.util.UUID"/>
+		<typeHandler handler="com.zeedoo.commons.mybatis.UUIDTypeHandler" javaType="java.util.UUID"/>
 	</typeHandlers>
 
 	<environments default="dev">

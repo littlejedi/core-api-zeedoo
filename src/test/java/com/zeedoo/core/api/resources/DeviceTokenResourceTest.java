@@ -21,7 +21,7 @@ import com.zeedoo.core.api.TestConstants;
 import com.zeedoo.core.api.client.HmacClientFilter;
 import com.zeedoo.core.api.dao.DeviceTokenDao;
 import com.zeedoo.core.api.database.SqlService;
-import com.zeedoo.core.domain.DeviceToken;
+import com.zeedoo.commons.domain.DeviceToken;
 
 @RunWith(DropwizardJunitRunner.class)
 @ServiceConfiguration(value = App.class, setting = TestConstants.TEST_YAML_CONFIG)

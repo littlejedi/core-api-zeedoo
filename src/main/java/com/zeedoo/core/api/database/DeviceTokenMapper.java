@@ -2,9 +2,9 @@ package com.zeedoo.core.api.database;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.zeedoo.core.domain.DeviceToken;
+import com.zeedoo.commons.domain.DeviceToken;
 
-public interface DeviceTokenMapper {
+public interface DeviceTokenMapper extends Mapper{
 		
 	/** 
 	 * Device Tokens

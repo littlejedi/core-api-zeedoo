@@ -9,7 +9,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.2.1.RELEASE</spring.version>
 		<dropwizard.version>0.6.2</dropwizard.version>
-		<core.domain.version>0.12</core.domain.version>
+		<zeedoo.commons.version>0.1-SNAPSHOT</zeedoo.commons.version>
 	</properties>
 
 	<repositories>
@@ -39,11 +39,25 @@
 			<version>${dropwizard.version}</version>
 		</dependency>
 		
-		<!-- Zeedoo core domain -->
+		<!-- Zeedoo commons -->
         <dependency>
             <groupId>com.zeedoo</groupId>
-            <artifactId>core-domain</artifactId>
-            <version>${core.domain.version}</version>
+            <artifactId>zeedoo-commons</artifactId>
+            <version>${zeedoo.commons.version}</version>
+            <exclusions>
+               <exclusion>
+                  <groupId>org.springframework</groupId>
+			      <artifactId>spring-context</artifactId>
+               </exclusion>
+               <exclusion>
+			     <groupId>org.slf4j</groupId>
+			     <artifactId>slf4j-api</artifactId>
+			  </exclusion>
+			  <exclusion>
+			     <groupId>org.slf4j</groupId>
+			     <artifactId>slf4j-log4j12</artifactId>
+			  </exclusion>
+            </exclusions>
         </dependency>
 
 		<!-- Dropwizard and Spring integration -->
@@ -104,29 +118,10 @@
 			<version>1.17.1</version>
 		</dependency>
 
-		<!-- MX4J -->
-		<dependency>
-			<groupId>mx4j</groupId>
-			<artifactId>mx4j-tools</artifactId>
-			<version>3.0.1</version>
-		</dependency>
-
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>jsr250-api</artifactId>
 			<version>1.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>14.0</version>
 		</dependency>
 
 		<!-- Encryption -->

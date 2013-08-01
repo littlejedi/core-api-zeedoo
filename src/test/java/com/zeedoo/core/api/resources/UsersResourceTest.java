@@ -19,8 +19,8 @@ import com.zeedoo.core.api.DropwizardJunitRunner;
 import com.zeedoo.core.api.ServiceConfiguration;
 import com.zeedoo.core.api.TestConstants;
 import com.zeedoo.core.api.client.HmacClientFilter;
-import com.zeedoo.core.domain.User;
-import com.zeedoo.core.domain.UserCredentials;
+import com.zeedoo.commons.domain.User;
+import com.zeedoo.commons.domain.UserCredentials;
 
 @RunWith(DropwizardJunitRunner.class)
 @ServiceConfiguration(value = App.class, setting = TestConstants.TEST_YAML_CONFIG)

@@ -17,10 +17,10 @@ import org.springframework.stereotype.Component;
 
 import com.mysql.jdbc.StringUtils;
 import com.yammer.metrics.annotation.Timed;
+import com.zeedoo.commons.domain.ApiToken;
+import com.zeedoo.commons.domain.DeviceToken;
 import com.zeedoo.core.api.client.UrbanAirshipClient;
 import com.zeedoo.core.api.dao.DeviceTokenDao;
-import com.zeedoo.core.domain.ApiToken;
-import com.zeedoo.core.domain.DeviceToken;
 import com.zeedoo.core.api.hmac.Restricted;
 
 /**
