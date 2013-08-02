@@ -28,6 +28,7 @@
 		<mapper resource="com/zeedoo/core/api/database/apiTokenMapper.xml" />
 		<mapper resource="com/zeedoo/core/api/database/deviceTokenMapper.xml" />
 		<mapper resource="com/zeedoo/core/api/database/sensorDataRecordsMapper.xml" />
+		<mapper resource="com/zeedoo/core/api/database/sensorStatusMapper.xml" />
 	    <mapper resource="com/zeedoo/core/api/database/userMapper.xml" />
 	</mappers>
 </configuration>

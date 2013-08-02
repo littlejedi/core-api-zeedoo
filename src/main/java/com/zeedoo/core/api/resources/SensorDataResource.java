@@ -11,13 +11,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.base.Preconditions;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.yammer.dropwizard.jersey.params.DateTimeParam;
 import com.yammer.metrics.annotation.Timed;

@@ -19,6 +19,7 @@ import com.zeedoo.core.api.hmac.HmacServerCredentials;
 import com.zeedoo.core.api.hmac.HmacServerRestrictedProvider;
 import com.zeedoo.core.api.resources.aspect.TimedResourceMethodDispatchAdapter;
 import com.zeedoo.commons.domain.ApiToken;
+import com.zeedoo.commons.jackson.JodaDateTimeModule;
 
 public class App extends Service<AppConfiguration> {
 		

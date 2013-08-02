@@ -1,6 +1,5 @@
 package com.zeedoo.core.api.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -9,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Preconditions;
+import com.zeedoo.commons.domain.SensorDataRecord;
 import com.zeedoo.core.api.database.SensorDataRecordsMapper;
 import com.zeedoo.core.api.database.transaction.Transactional;
-import com.zeedoo.commons.domain.SensorDataRecord;
 
 @Component
 public class SensorDataRecordsDao extends EntityDao<SensorDataRecordsMapper> {
