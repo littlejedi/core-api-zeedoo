@@ -2,8 +2,10 @@ package com.zeedoo.core.api.resources;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,7 +23,7 @@ import com.yammer.dropwizard.jersey.params.DateTimeParam;
 import com.yammer.metrics.annotation.Timed;
 import com.zeedoo.commons.domain.SensorDataRecord;
 import com.zeedoo.commons.domain.SensorDataRecords;
-import com.zeedoo.core.api.dao.SensorDataRecordsDao;
+import com.zeedoo.core.api.database.dao.SensorDataRecordsDao;
 
 @Path("/sensorData")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -46,6 +48,16 @@ public class SensorDataResource {
 		List<SensorDataRecord> records = sensorDataRecordsDao.get(sensorId, start, end);
 		SensorDataRecords result = new SensorDataRecords(records);
 		return result;
+	}
+	
+	@PUT
+	@Timed
+	public Response doInsertSensorData(@Valid SensorDataRecords records) {
+		if (records == null) {
+			throw new WebApplicationException(Response.status(Status.BAD_REQUEST).entity("Must provide a valid payload!").build());
+		}
+		sensorDataRecordsDao.insertDataRecords(records.getSensorDataRecords());
+		return Response.ok().entity("Succesfully inserted data records").build();
 	}
 
 }

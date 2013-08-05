@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 import com.google.common.base.Optional;
 import com.yammer.metrics.annotation.Timed;
 import com.zeedoo.commons.domain.SensorStatus;
-import com.zeedoo.core.api.dao.SensorStatusDao;
+import com.zeedoo.core.api.database.dao.SensorStatusDao;
 
 /**
  * Resource endpoint to work with sensor status
@@ -68,7 +68,8 @@ public class SensorStatusResource {
 	@Timed
 	public SensorStatus doPut(@PathParam("sensorId") String sensorId, @Valid SensorStatus sensorStatus) {
 		if (!sensorId.equals(sensorStatus.getSensorId())) {
-			LOGGER.warn("Path param sensorId={} does NOT match the sensorId in the SensorStatus entity={}, using the sensorId in the entity instead", sensorId, sensorStatus);
+			LOGGER.warn("Path param sensorId={} does NOT match the sensorId in the SensorStatus entity={}, setting entity's sensorId to the path param value", sensorId, sensorStatus);
+			sensorStatus.setSensorId(sensorId);
 		}
 		int result = sensorStatusDao.update(sensorStatus);
 		if (result == 0) {

@@ -1,10 +1,10 @@
-package com.zeedoo.core.api.dao;
+package com.zeedoo.core.api.database.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.zeedoo.core.api.database.DeviceTokenMapper;
-import com.zeedoo.core.api.database.SqlService;
+import com.zeedoo.core.api.database.mapper.DeviceTokenMapper;
+import com.zeedoo.core.api.database.mapper.SqlService;
 import com.zeedoo.core.api.database.transaction.Transactional;
 import com.zeedoo.commons.domain.DeviceToken;
 

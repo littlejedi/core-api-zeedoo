@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.base.Optional;
 import com.yammer.metrics.annotation.Timed;
-import com.zeedoo.core.api.dao.UserDao;
+import com.zeedoo.core.api.database.dao.UserDao;
 import com.zeedoo.core.api.hmac.Restricted;
 import com.zeedoo.core.api.utils.UuidUtils;
 import com.zeedoo.commons.domain.ApiToken;

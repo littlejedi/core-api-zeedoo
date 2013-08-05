@@ -1,4 +1,4 @@
-package com.zeedoo.core.api.database;
+package com.zeedoo.core.api.database.mapper;
 
 import org.apache.ibatis.annotations.Param;
 

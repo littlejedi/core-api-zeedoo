@@ -1,28 +1,26 @@
-package com.zeedoo.core.api.database;
+package com.zeedoo.core.api.database.dao;
 
 import java.util.UUID;
 
 import junit.framework.Assert;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import com.zeedoo.core.api.dao.UserDao;
 import com.zeedoo.commons.domain.User;
+import com.zeedoo.core.api.database.mapper.SqlService;
 
-public class UserDaoTest {
+public class UserDaoTest extends EntityDaoTest {
 	
 	private static final String TEST_USER_UUID = "5102e2a9-201c-4a26-8d69-7b8b93f85a55";
 	private static final String TEST_USERNAME = "littlejedi";
 	
 	protected final SqlService sqlService = new SqlService();
-	protected final UserDao userDao = new UserDao();
-
-	@Before
-	public void setUp() throws Exception {
-		sqlService.setEnvironment("dev");
-		sqlService.init();
-		userDao.setSqlService(sqlService);
+	protected final UserDao userDao;
+	
+	public UserDaoTest() throws Exception {
+		super();
+		userDao = new UserDao();
+		userDao.setSqlService(databaseService);
 	}
 
 	@Test

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zeedoo.core.api.database.SensorStatusMapper">
+<mapper namespace="com.zeedoo.core.api.database.mapper.SensorStatusMapper">
 	<resultMap type="com.zeedoo.commons.domain.SensorStatus" id="sensorStatusMap">
 	    <result column="id" property="id" />
 	    <result column="sal_sen_id" property="sensorId" />

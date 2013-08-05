@@ -1,4 +1,4 @@
-package com.zeedoo.core.api.database;
+package com.zeedoo.core.api.database.mapper;
 
 /**
  * Generic interface for Mapper

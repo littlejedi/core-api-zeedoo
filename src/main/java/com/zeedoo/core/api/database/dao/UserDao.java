@@ -1,4 +1,4 @@
-package com.zeedoo.core.api.dao;
+package com.zeedoo.core.api.database.dao;
 
 import java.util.UUID;
 
@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Preconditions;
-import com.zeedoo.core.api.database.SqlService;
-import com.zeedoo.core.api.database.UserMapper;
+import com.zeedoo.core.api.database.mapper.SqlService;
+import com.zeedoo.core.api.database.mapper.UserMapper;
 import com.zeedoo.core.api.database.transaction.Transactional;
 import com.zeedoo.commons.domain.User;
 

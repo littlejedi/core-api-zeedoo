@@ -2,7 +2,7 @@ package com.zeedoo.core.api.resources;
 
 import com.sun.jersey.api.client.Client;
 import com.zeedoo.core.api.client.HmacClientFilter;
-import com.zeedoo.core.api.database.SqlService;
+import com.zeedoo.core.api.database.mapper.SqlService;
 
 public class BaseResourceTest {
 	

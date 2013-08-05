@@ -1,4 +1,4 @@
-package com.zeedoo.core.api.dao;
+package com.zeedoo.core.api.database.dao;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.base.Preconditions;
 import com.zeedoo.commons.domain.SensorDataRecord;
-import com.zeedoo.core.api.database.SensorDataRecordsMapper;
+import com.zeedoo.core.api.database.mapper.SensorDataRecordsMapper;
 import com.zeedoo.core.api.database.transaction.Transactional;
 
 @Component

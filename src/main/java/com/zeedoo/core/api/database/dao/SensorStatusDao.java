@@ -1,9 +1,9 @@
-package com.zeedoo.core.api.dao;
+package com.zeedoo.core.api.database.dao;
 
 import org.springframework.stereotype.Component;
 
 import com.zeedoo.commons.domain.SensorStatus;
-import com.zeedoo.core.api.database.SensorStatusMapper;
+import com.zeedoo.core.api.database.mapper.SensorStatusMapper;
 import com.zeedoo.core.api.database.transaction.Transactional;
 
 @Component

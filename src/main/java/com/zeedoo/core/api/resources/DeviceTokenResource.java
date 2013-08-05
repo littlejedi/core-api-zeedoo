@@ -20,7 +20,7 @@ import com.yammer.metrics.annotation.Timed;
 import com.zeedoo.commons.domain.ApiToken;
 import com.zeedoo.commons.domain.DeviceToken;
 import com.zeedoo.core.api.client.UrbanAirshipClient;
-import com.zeedoo.core.api.dao.DeviceTokenDao;
+import com.zeedoo.core.api.database.dao.DeviceTokenDao;
 import com.zeedoo.core.api.hmac.Restricted;
 
 /**

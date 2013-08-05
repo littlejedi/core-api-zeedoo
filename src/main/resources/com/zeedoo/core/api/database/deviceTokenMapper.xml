@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zeedoo.core.api.database.DeviceTokenMapper">
+<mapper namespace="com.zeedoo.core.api.database.mapper.DeviceTokenMapper">
 	<resultMap type="com.zeedoo.commons.domain.DeviceToken" id="deviceTokenMap">
 	    <result column="dev_id" property="id" />
 	    <result column="dev_token_id" property="tokenId" />

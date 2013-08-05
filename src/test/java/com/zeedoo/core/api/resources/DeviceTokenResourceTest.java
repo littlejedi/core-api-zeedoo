@@ -17,8 +17,8 @@ import com.zeedoo.core.api.App;
 import com.zeedoo.core.api.DropwizardJunitRunner;
 import com.zeedoo.core.api.ServiceConfiguration;
 import com.zeedoo.core.api.TestConstants;
-import com.zeedoo.core.api.dao.DeviceTokenDao;
-import com.zeedoo.core.api.database.SqlService;
+import com.zeedoo.core.api.database.dao.DeviceTokenDao;
+import com.zeedoo.core.api.database.mapper.SqlService;
 
 @RunWith(DropwizardJunitRunner.class)
 @ServiceConfiguration(value = App.class, setting = TestConstants.TEST_YAML_CONFIG)

@@ -1,4 +1,4 @@
-package com.zeedoo.core.api.dao;
+package com.zeedoo.core.api.database.dao;
 
 /**
  * Generic Entity DAO Adapter

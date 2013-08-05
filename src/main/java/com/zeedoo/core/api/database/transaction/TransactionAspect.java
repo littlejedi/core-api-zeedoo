@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.zeedoo.core.api.database.SqlService;
+import com.zeedoo.core.api.database.mapper.SqlService;
 
 @Component
 @Aspect
