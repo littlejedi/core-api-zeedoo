@@ -23,6 +23,7 @@ import com.zeedoo.core.api.TestConstants;
 public class SensorStatusResourceTest extends BaseResourceTest {
 		
 	public SensorStatusResourceTest() throws Exception {
+		super();
 	}
 	
 	@Test

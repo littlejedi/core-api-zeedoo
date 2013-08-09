@@ -18,7 +18,7 @@ public class BaseResourceTest {
 		client.getProperties().put("api_key", TEST_API_KEY);
 		client.getProperties().put("secret_key", TEST_SECRET_KEY);
 		client.addFilter(new HmacClientFilter(client.getProviders()));
-		
+		System.out.println(client.getProviders());
 		//DB connection
 		sqlService.setEnvironment("dev");
 		sqlService.init();
