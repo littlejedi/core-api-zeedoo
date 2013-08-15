@@ -2,9 +2,6 @@ package com.zeedoo.core.api.resources.aspect;
 
 import java.util.Date;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.api.model.AbstractResourceMethod;
 import com.sun.jersey.spi.container.ResourceMethodDispatchProvider;
@@ -22,8 +19,6 @@ public class TimedResourceMethodDispatchProvider implements
 	
 	private static class TimedRequestDispatcher implements RequestDispatcher {
 		
-		private Logger LOGGER = LoggerFactory.getLogger(TimedRequestDispatcher.class);
-
 		private final RequestDispatcher underlying;
 		
 		private TimedRequestDispatcher(RequestDispatcher underlying) {
@@ -42,7 +37,7 @@ public class TimedResourceMethodDispatchProvider implements
 			} finally {
 				long end = new Date().getTime();
 				long elapsed = end - start;
-				ResourceSLA.LOGGER.info("Request = {}, Elapsed Time = {}, Resource = {}", new Object[]{method + " " + path, elapsed, resourceClass});
+				ResourceSLA.LOGGER.info("Request={}, Elapsed Time={}ms, Resource={}", new Object[]{method + " " + path, elapsed, resourceClass});
 			}
 
 		}		
