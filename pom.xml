@@ -9,7 +9,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.2.1.RELEASE</spring.version>
 		<dropwizard.version>0.6.2</dropwizard.version>
-		<zeedoo.commons.version>0.11-SNAPSHOT</zeedoo.commons.version>
+		<zeedoo.commons.version>0.12-SNAPSHOT</zeedoo.commons.version>
 	</properties>
 
 	<repositories>
