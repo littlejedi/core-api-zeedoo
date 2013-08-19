@@ -5,41 +5,42 @@
 <mapper namespace="com.zeedoo.core.api.database.mapper.SunStatusMapper">
 	<resultMap type="com.zeedoo.commons.domain.SunStatus" id="sunStatusMap">
 	    <result column="id" property="id" />
-	    <result column="sas_sun_id" property="sunId" />
+	    <result column="sas_sun_mac_address" property="sunMacAddress" />
 	    <result column="sas_ip_address" property="sunIpAddress" />
+	    <result column="sas_sun_port" property="sunPort" />
 	    <result column="sas_sun_alive_state" property="sunStatus" />
 	    <result column="sas_last_updated" property="lastUpdated" />
 	</resultMap>
 	
-	<select id="getStatusBySunId" resultMap="sunStatusMap">
-	     SELECT id, sas_sun_id, INET_NTOA(sas_sun_ip_address) AS sunIpAddress, sas_sun_alive_state, sas_last_updated 
+	<select id="getStatusBySunMacAddress" resultMap="sunStatusMap">
+	     SELECT id, sas_sun_mac_address, INET_NTOA(sas_sun_ip_address) AS sunIpAddress, sas_sun_port, sas_sun_alive_state, sas_last_updated 
 	     FROM sun_alive_status
-	     WHERE sas_sun_id = #{sunId}
+	     WHERE sas_sun_mac_address = #{sunMacAddress}
 	     <!-- Only get the status with the most recent updated date -->
 	     ORDER BY sas_last_updated DESC	 
 	     LIMIT 1   
 	</select>
 	
-	<select id="getStatusByIpAddress" resultMap="sunStatusMap">
-	     SELECT id, sas_sun_id, INET_NTOA(sas_sun_ip_address) AS sunIpAddress, sas_sun_alive_state, sas_last_updated 
+	<select id="getStatusBySocketAddress" resultMap="sunStatusMap">
+	     SELECT id, sas_sun_mac_address, INET_NTOA(sas_sun_ip_address) AS sunIpAddress, sas_sun_port, sas_sun_alive_state, sas_last_updated
 	     FROM sun_alive_status
-	     WHERE sas_sun_ip_address = INET_ATON(#{ipAddress})	  
+	     WHERE sas_sun_ip_address = INET_ATON(#{ipAddress})	AND sas_sun_port = #{port}
 	     <!-- Only get the status with the most recent updated date -->
 	     ORDER BY sas_last_updated DESC	 
 	     LIMIT 1 
 	</select>
 		
 	<insert id="insert">
-	    INSERT INTO sun_alive_status (sas_sun_id, sas_sun_ip_address, sas_sun_alive_state, sas_last_updated)
+	    INSERT INTO sun_alive_status (sas_sun_mac_address, sas_sun_ip_address, sas_sun_port, sas_sun_alive_state, sas_last_updated)
 	    VALUES
-	    (#{sunStatus.sunId},INET_ATON(#{sunStatus.sunIpAddress}),#{sunStatus.sunStatus}, unix_timestamp(LOCALTIMESTAMP()))
+	    (#{sunStatus.sunMacAddress},INET_ATON(#{sunStatus.sunIpAddress}),#{sunStatus.sunPort},#{sunStatus.sunStatus}, unix_timestamp(LOCALTIMESTAMP()))
 	</insert>
 	
 	<update id="update">
 	    UPDATE sun_alive_status
-	    SET sas_sun_id = #{sunStatus.sunId},
+	    SET sas_sun_mac_address = #{sunStatus.sunMacAddress},
 	        sas_sun_alive_state = #{sunStatus.sunStatus},
 	        sas_last_updated = unix_timestamp(LOCALTIMESTAMP())
-	    WHERE sas_sun_ip_address = INET_ATON(#{sunStatus.sunIpAddress})
+	    WHERE sas_sun_ip_address = INET_ATON(#{sunStatus.sunIpAddress}) AND sas_sun_port = #{sunStatus.sunPort}
 	</update>
 </mapper>

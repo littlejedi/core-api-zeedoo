@@ -11,9 +11,9 @@ import com.zeedoo.commons.domain.SunStatus;
  */
 public interface SunStatusMapper extends Mapper {
 	
-	SunStatus getStatusByIpAddress(@Param(value = "ipAddress") String ipAddress);
+	SunStatus getStatusBySocketAddress(@Param(value = "ipAddress") String ipAddress, @Param(value = "port") Integer port);
 	
-	SunStatus getStatusBySunId(@Param(value = "sunId") String sunId);
+	SunStatus getStatusBySunMacAddress(@Param(value = "sunMacAddress") String sunMacAddress);
 	
 	int insert(@Param(value = "sunStatus") SunStatus sunStatus);
 	

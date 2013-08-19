@@ -34,25 +34,27 @@ public class SunStatusResourceTest extends BaseResourceTest {
 	@Test
 	public void testCreate() {
 		String fakeId = UUID.randomUUID().toString();
+		Integer fakePort = new Random().nextInt(1000);
 		String fakeIpAddress = InetAddresses.fromInteger(new Random().nextInt()).getHostAddress();
-		SunStatus status = new SunStatus(fakeIpAddress, fakeId, DeviceStatus.ONLINE);
+		SunStatus status = new SunStatus(fakeIpAddress, fakePort, fakeId, DeviceStatus.ONLINE);
 		WebResource resource = client.resource("http://localhost:9898/sunStatus");
 		status = resource.type(MediaType.APPLICATION_JSON).post(SunStatus.class, status);
 		Assert.assertNotNull(status);
-		Assert.assertEquals(fakeId, status.getSunId());
+		Assert.assertEquals(fakeId, status.getSunMacAddress());
 	}
 	
 	@Test
-	public void testUpdate() {
+	public void testUpdate() { 
 		final String testIp = "112.151.147.222";
-		WebResource resource = client.resource("http://localhost:9898/sunStatus" + "/" + testIp);
+		final String testPort = "12345";
+		WebResource resource = client.resource("http://localhost:9898/sunStatus" + "/" + testIp + ":" + testPort);
 		SunStatus status = resource.accept(MediaType.APPLICATION_JSON).get(SunStatus.class);
 		Random generator = new Random();
 		String randomSunId = "Sun"  + generator.nextInt(100);
 		Assert.assertNotNull(status);
-		status.setSunId(randomSunId);
-		status = client.resource("http://localhost:9898/sunStatus" + "/" + testIp).type(MediaType.APPLICATION_JSON).put(SunStatus.class, status);
-		Assert.assertEquals(randomSunId, status.getSunId());
+		status.setSunMacAddress(randomSunId);
+		status = client.resource("http://localhost:9898/sunStatus" + "/" + testIp + ":" + testPort).type(MediaType.APPLICATION_JSON).put(SunStatus.class, status);
+		Assert.assertEquals(randomSunId, status.getSunMacAddress());
 	}
 
 }

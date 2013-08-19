@@ -36,19 +36,28 @@ public class SunStatusResource {
 	@Autowired
 	private SunStatusDao sunStatusDao;
 	
-	@Path("/{ipAddress}")
+	@Path("/{socketAddress}")
 	@GET
 	@Timed
-	public SunStatus doGetByIpAddress(@PathParam("ipAddress") String ipAddress) {
-		if (StringUtils.isEmptyOrWhitespaceOnly(ipAddress)) {
-			Response response = Response.status(Status.BAD_REQUEST).entity("Must provided a valid ip address for findBy").build();
+	public SunStatus doGetBySocketAddress(@PathParam("socketAddress") String socketAddress) {
+		// Validate the socket address
+		boolean validSocketAddress = true;
+		if (StringUtils.isEmptyOrWhitespaceOnly(socketAddress)) {
+			validSocketAddress = false;
+		}
+		String[] ipPortPair = socketAddress.split(":");
+		if (ipPortPair.length != 2) {
+			validSocketAddress = false;
+		}
+		if (!validSocketAddress) {
+			Response response = Response.status(Status.BAD_REQUEST).entity("Must provided a valid socket address (ip:port)").build();
 			throw new WebApplicationException(response);
 		}
-		Optional<SunStatus> sunStatus = Optional.fromNullable(sunStatusDao.getStatusByIpAddress(ipAddress));
+		Optional<SunStatus> sunStatus = Optional.fromNullable(sunStatusDao.getStatusBySocketAddress(ipPortPair[0], Integer.parseInt(ipPortPair[1])));
 		if (sunStatus.isPresent()) {
 			return sunStatus.get();
 		} else {
-			Response response = Response.status(Status.NOT_FOUND).entity("Could not find a SunStatus with given ipAddress=" + ipAddress).build();
+			Response response = Response.status(Status.NOT_FOUND).entity("Could not find a SunStatus with given socketAddress=" + socketAddress).build();
 			throw new WebApplicationException(response);
 		}
 	}
@@ -61,38 +70,49 @@ public class SunStatusResource {
 			throw new WebApplicationException(response);
 		}
 		sunStatusDao.insert(sunStatus);
-		return sunStatusDao.getStatusByIpAddress(sunStatus.getSunIpAddress());
+		return sunStatusDao.getStatusBySocketAddress(sunStatus.getSunIpAddress(), sunStatus.getSunPort());
 	}
 	
-	@Path("/{ipAddress}")
+	@Path("/{socketAddress}")
 	@PUT
 	@Timed
-	public SunStatus doUpdateSunStatus(@PathParam("ipAddress") String ipAddress, @Valid SunStatus sunStatus) {
+	public SunStatus doUpdateSunStatus(@PathParam("socketAddress") String socketAddress, @Valid SunStatus sunStatus) {
 		if (sunStatus == null) {
 			Response response = Response.status(Status.BAD_REQUEST).entity("Must provided a valid SunStatus entity").build();
 			throw new WebApplicationException(response);
-		}		
+		}
+		final String[] ipPortPair = socketAddress.split(":");
+		if (ipPortPair.length != 2) {
+			Response response = Response.status(Status.BAD_REQUEST).entity("Must provided a valid socket address (ip:port)").build();
+			throw new WebApplicationException(response);
+		}
+		final String ipAddress = ipPortPair[0];
+		final String port = ipPortPair[1];
 		if (!ipAddress.equals(sunStatus.getSunIpAddress())) {
 			LOGGER.warn("Provided path param ip address does not equal to the ip address in the entity, setting the entity's ip address to:" + ipAddress);
 			sunStatus.setSunIpAddress(ipAddress);
 		}
+		if (!port.equals(String.valueOf(sunStatus.getSunPort()))) {
+			LOGGER.warn("Provided path param port does not equal to the port in the entity, setting the entity's port to:" + port);
+			sunStatus.setSunPort(Integer.valueOf(port));
+		}
 		sunStatusDao.update(sunStatus);
-		return sunStatusDao.getStatusByIpAddress(sunStatus.getSunIpAddress());
+		return sunStatusDao.getStatusBySocketAddress(sunStatus.getSunIpAddress(), sunStatus.getSunPort());
 	}
 	
-	@Path("/findBySunId")
+	@Path("/findBySunMacAddress")
 	@GET
 	@Timed
-	public SunStatus doFindBySunId(@QueryParam("sunId") String sunId) {
-		if (StringUtils.isEmptyOrWhitespaceOnly(sunId)) {
-			Response response = Response.status(Status.BAD_REQUEST).entity("Must provided a valid Sun Id for findBy").build();
+	public SunStatus doFindBySunMacAddress(@QueryParam("sunMacAddress") String sunMacAddress) {
+		if (StringUtils.isEmptyOrWhitespaceOnly(sunMacAddress)) {
+			Response response = Response.status(Status.BAD_REQUEST).entity("Must provided a valid Sun MAC Address for findBy").build();
 			throw new WebApplicationException(response);
 		}
-		Optional<SunStatus> sunStatus = Optional.fromNullable(sunStatusDao.getStatusBySunId(sunId));
+		Optional<SunStatus> sunStatus = Optional.fromNullable(sunStatusDao.getStatusBySunMacAddress(sunMacAddress));
 		if (sunStatus.isPresent()) {
 			return sunStatus.get();
 		} else {
-			Response response = Response.status(Status.NOT_FOUND).entity("Could not find a SunStatus with given sunId=" + sunId).build();
+			Response response = Response.status(Status.NOT_FOUND).entity("Could not find a SunStatus with given sunMacAddress=" + sunMacAddress).build();
 			throw new WebApplicationException(response);
 		}
 	}
