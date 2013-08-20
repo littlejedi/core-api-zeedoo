@@ -18,6 +18,12 @@
 	     FROM sensor_alive_status
 	     WHERE sal_sen_id = #{sensorId}	    
 	</select>
+	
+	<select id="findByMacAddress" resultType="java.lang.String">
+	     SELECT sal_sen_id
+	     FROM sensor_alive_status
+	     WHERE sal_sun_mac_address = #{macAddress}
+	</select>
 		
 	<insert id="insert">
 	    INSERT INTO sensor_alive_status (sal_sen_id, sal_alive_status, sal_sun_ip_address, sal_sun_ip_port, sal_sun_mac_address, sal_last_updated)

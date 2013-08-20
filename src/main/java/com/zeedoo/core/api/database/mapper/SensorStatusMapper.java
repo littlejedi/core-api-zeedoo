@@ -1,5 +1,7 @@
 package com.zeedoo.core.api.database.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.zeedoo.commons.domain.SensorStatus;
@@ -11,7 +13,9 @@ import com.zeedoo.commons.domain.SensorStatus;
  */
 public interface  SensorStatusMapper extends Mapper {
 	
-	SensorStatus get(@Param(value = "sensorId")String sensorId);
+	SensorStatus get(@Param(value = "sensorId") String sensorId);
+	
+	List<String> findByMacAddress(@Param(value = "macAddress") String macAddress);
 	
 	int update(@Param(value = "sensorStatus") SensorStatus sensorStatus);
 	

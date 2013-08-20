@@ -1,5 +1,7 @@
 package com.zeedoo.core.api.database.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.zeedoo.commons.domain.SensorStatus;
@@ -13,6 +15,12 @@ public class SensorStatusDao extends EntityDao<SensorStatusMapper> {
 	public SensorStatus get(String sensorId) {
 		SensorStatusMapper mapper = getMapper();
 		return mapper.get(sensorId);
+	}
+	
+	@Transactional
+	public List<String> findByMacAddress(String macAddress) {
+		SensorStatusMapper mapper = getMapper();
+		return mapper.findByMacAddress(macAddress);
 	}
 	
 	@Transactional

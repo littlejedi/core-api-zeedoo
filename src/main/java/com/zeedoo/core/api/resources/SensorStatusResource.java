@@ -1,5 +1,8 @@
 package com.zeedoo.core.api.resources;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -9,9 +12,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response.Status;
 
 import org.slf4j.Logger;
@@ -20,7 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+import com.mysql.jdbc.StringUtils;
 import com.yammer.metrics.annotation.Timed;
+import com.zeedoo.commons.api.CoreApiPath;
+import com.zeedoo.commons.domain.FindByResult;
 import com.zeedoo.commons.domain.SensorStatus;
 import com.zeedoo.core.api.database.dao.SensorStatusDao;
 
@@ -51,6 +60,24 @@ public class SensorStatusResource {
 		} else {
 			throw new WebApplicationException(Response.status(Status.NOT_FOUND).entity("Could not find sensorStatus with sensorId: " + sensorId).build());
 		}
+	}
+	
+	@Path("/findByMacAddress")
+	@GET
+	@Timed
+	public FindByResult doFindByMacAddress(@QueryParam("macAddress") String macAddress) {
+		if (StringUtils.isEmptyOrWhitespaceOnly(macAddress)) {
+			Response response = Response.status(Status.BAD_REQUEST).entity("Must provided a valid MAC Address for findBy").build();
+			throw new WebApplicationException(response);
+		}
+		// Build the result URLs
+		List<String> sensorIds = sensorStatusDao.findByMacAddress(macAddress);
+		ArrayList<String> urlLinks = Lists.newArrayListWithCapacity(sensorIds.size());
+		for (String sensorId : sensorIds) {
+			String url = UriBuilder.fromPath(CoreApiPath.SENSOR_STATUS.getPath()).path(sensorId).build().toASCIIString();
+			urlLinks.add(url);
+		}
+		return new FindByResult(urlLinks);
 	}
 	
 	@POST

@@ -100,7 +100,7 @@ public class SunStatusResource {
 		return sunStatusDao.getStatusBySocketAddress(sunStatus.getSunIpAddress(), sunStatus.getSunPort());
 	}
 	
-	@Path("/findBySunMacAddress")
+	@Path("/findByMacAddress")
 	@GET
 	@Timed
 	public SunStatus doFindBySunMacAddress(@QueryParam("sunMacAddress") String sunMacAddress) {
