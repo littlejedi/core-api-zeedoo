@@ -25,9 +25,6 @@
 	     SELECT id, sas_sun_mac_address, INET_NTOA(sas_sun_ip_address) AS sunIpAddress, sas_sun_port, sas_sun_alive_state, sas_last_updated
 	     FROM sun_alive_status
 	     WHERE sas_sun_ip_address = INET_ATON(#{ipAddress})	AND sas_sun_port = #{port}
-	     <!-- Only get the status with the most recent updated date -->
-	     ORDER BY sas_last_updated DESC	 
-	     LIMIT 1 
 	</select>
 		
 	<insert id="insert">
