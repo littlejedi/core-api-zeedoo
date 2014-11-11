@@ -7,28 +7,145 @@
 	    <result column="id" property="id" />
 	    <result column="sun_id" property="sunId" />
 	    <result column="sun_ssid" property="sunSsid" />
-	    <result column="sun_geocode" property="geoCode" />
+	    <result column="sun_geo_lat" property="latitude" />
+	    <result column="sun_geo_long" property="longitude" />
 	    <result column="sun_location" property="location" />
 	    <result column="sun_wireless_pass" property="wirelessCode" />
+	    <result column="sun_alive_state" property="status" />
+	    <result column="sun_mac_address" property="macAddress" />
+	    <result column="sun_ip_address" property="currentIpAddress" />
+	    <result column="sun_port" property="currentPort" />
+	    <result column="sun_last_updated" property="updated" />
 	</resultMap>
 	
-	<select id="get" resultMap="sunMap">
-	     SELECT id, sun_id, sun_ssid, sun_geocode, sun_location, sun_wireless_pass FROM sun
-	     WHERE sun_id = #{sunId}	    
+	<select id="getAllSuns" resultMap="sunMap">
+	     SELECT id, sun_id, sun_ssid, sun_geo_lat, sun_geo_long, sun_location, sun_wireless_pass, sun_alive_state, sun_mac_address, sun_ip_address, sun_port, sun_last_updated
+	     FROM sun
+	     <if test="max != null"> LIMIT ${max}</if> 
+	</select>
+	
+	<select id="findSunsCount" resultType="java.lang.Integer">
+	     SELECT COUNT(DISTINCT su.id)
+	     FROM sun su
+	     <if test="username != null">
+	     	  JOIN sensor se ON su.sun_mac_address = se.sen_sun_mac_address
+	     </if>
+	     <where>
+	       <if test="username != null">
+	          AND se.sen_use_username = #{username}
+	       </if> 
+	     </where>
+	</select>
+	
+	<select id="findSuns" resultType="java.lang.String">
+	     SELECT DISTINCT su.id
+	     FROM sun su
+	     <if test="username != null">
+	     	  JOIN sensor se ON su.sun_mac_address = se.sen_sun_mac_address
+	     </if>
+	     <where>
+	       <if test="username != null">
+	          AND se.sen_use_username = #{username}
+	       </if> 
+	     </where>
+	     LIMIT
+	     #{start}, #{end}
+	</select>
+	
+	<select id="findSunsFullEntity" resultMap="sunMap">
+	     SELECT DISTINCT su.id, su.sun_id, su.sun_ssid, su.sun_geo_lat, su.sun_geo_long, su.sun_location, su.sun_wireless_pass, su.sun_alive_state, su.sun_mac_address, su.sun_ip_address, su.sun_port, su.sun_last_updated
+	     FROM sun su
+	     <if test="username != null">
+	     	  JOIN sensor se ON su.sun_mac_address = se.sen_sun_mac_address
+	     </if>
+	     <where>
+	       <if test="username != null">
+	          AND se.sen_use_username = #{username}
+	       </if> 
+	     </where>
+	     LIMIT
+	     #{start}, #{end}
+	</select>
+	
+	<select id="getSunById" resultMap="sunMap">
+	     SELECT id, 
+	        sun_id, 
+	        sun_ssid, 
+	        sun_geo_lat,
+	        sun_geo_long,
+	        sun_location, 
+	        sun_wireless_pass,
+	        sun_alive_state,
+	        sun_mac_address,
+	        INET_NTOA(sun_ip_address) AS currentIpAddress,
+	        sun_port,
+	        sun_last_updated
+	     FROM sun
+	     WHERE id = #{id}	    
+	</select>
+	
+	<select id="getSunBySunMacAddress" resultMap="sunMap">
+	     SELECT id, 
+	        sun_id, 
+	        sun_ssid, 
+	        sun_geo_lat,
+	        sun_geo_long,
+	        sun_location, 
+	        sun_wireless_pass,
+	        sun_alive_state,
+	        sun_mac_address,
+	        INET_NTOA(sun_ip_address) AS currentIpAddress,
+	        sun_port,
+	        sun_last_updated
+	     FROM sun
+	     WHERE sun_mac_address = #{sunMacAddress}	    
+	</select>
+	
+	<select id="getSunBySocketAddress" resultMap="sunMap">
+	     SELECT id, 
+	        sun_id, 
+	        sun_ssid, 
+	        sun_geo_lat,
+	        sun_geo_long,
+	        sun_location, 
+	        sun_wireless_pass,
+	        sun_alive_state,
+	        sun_mac_address,
+	        INET_NTOA(sun_ip_address) AS currentIpAddress,
+	        sun_port,
+	        sun_last_updated
+	     FROM sun
+	     WHERE sun_ip_address = INET_ATON(#{ipAddress})	AND sun_port = #{port}   
 	</select>
 		
 	<insert id="insert">
-	    INSERT INTO sun (sun_id, sun_ssid)
+	    INSERT INTO sun (sun_id, 
+	    sun_ssid, 
+	    sun_geo_lat,
+	    sun_geo_long,
+	    sun_location, 
+	    sun_wireless_pass, 
+	    sun_alive_state,
+	    sun_mac_address, 
+	    sun_ip_address, 
+	    sun_port, 
+	    sun_last_updated)
 	    values
-	    (#{sun.sunId},#{sun.sunSsid})
+	    (#{sun.sunId},#{sun.sunSsid},#{sun.latitude},#{sun.longitude},#{sun.location},#{sun.wirelessCode},#{sun.status},#{sun.macAddress},INET_ATON(#{sun.currentIpAddress}),#{sun.currentPort},UNIX_TIMESTAMP())
 	</insert>
 	
 	<update id="update">
 		UPDATE sun SET
 		  sun_ssid = #{sun.sunSsid},
-		  sun_geocode = #{sun.geoCode},
+		  sun_geo_lat = #{sun.latitude},
+		  sun_geo_long = #{sun.longitude},
 		  sun_location = #{sun.location},
-		  sun_wireless_pass = #{sun.wirelessCode}	  
-		WHERE sun_id = #{sun.sunId}
+		  sun_wireless_pass = #{sun.wirelessCode},
+		  sun_alive_state = #{sun.status},
+		  sun_mac_address = #{sun.macAddress},
+		  sun_ip_address = INET_ATON(#{sun.currentIpAddress}),
+		  sun_port = #{sun.currentPort},
+		  sun_last_updated = UNIX_TIMESTAMP()
+		WHERE id = #{sun.id}
 	</update>
 </mapper>

@@ -1,5 +1,6 @@
 package com.zeedoo.core.api.database.dao;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -17,9 +18,27 @@ import com.zeedoo.commons.domain.User;
 public class UserDao extends EntityDao<UserMapper> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
-	
+		
 	@Autowired
 	private SqlService sqlService;
+	
+	@Transactional
+	public int findUsersCount() {
+		UserMapper mapper = getMapper();
+		return mapper.findUsersCount();
+	}
+	
+	@Transactional
+	public List<String> findUsers(int start, int end) {
+		UserMapper mapper = getMapper();
+		return mapper.findUsers(start, end);
+	}
+	
+	@Transactional
+	public List<User> findUsersFullEntity(int start, int end) {
+		UserMapper mapper = getMapper();
+		return mapper.findUsersFullEntity(start, end);
+	}
 	
 	@Transactional
 	public User get(UUID uuid) {

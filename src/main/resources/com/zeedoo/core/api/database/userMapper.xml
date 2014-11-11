@@ -7,7 +7,6 @@
 		<result column="use_username" property="username" />
 		<result column="use_password" property="password" />
 		<result column="use_email" property="email" />
-		<result column="use_uuid" property="uuid" />
 		<result column="use_nickname" property="nickname" />
 		<result column="use_api_key" property="apiKey"/>
 		<result column="use_secret_key" property="secretKey"/>
@@ -20,6 +19,25 @@
 	    <result column="api_key" property="apiKey" />
 	    <result column="api_secret" property="apiSecret" />
 	</resultMap>
+
+    <select id="findUsers" resultType="java.lang.String">
+        SELECT use_username
+	    FROM users
+	    LIMIT
+	    #{start}, #{end}
+    </select>
+    
+    <select id="findUsersFullEntity" resultMap="userMap">
+        SELECT use_username, use_email, use_nickname, use_last_login_date, use_last_logout_date
+	    FROM users
+	    LIMIT
+	    #{start}, #{end}
+    </select>
+    
+    <select id="findUsersCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+	    FROM users
+    </select>
 
 	<select id="get" resultMap="userMap">
 		SELECT * FROM users 
@@ -53,9 +71,9 @@
 
 	<insert id="insert">
 		INSERT INTO users (use_username, use_password, use_email, use_nickname,
-		use_uuid, use_registration_date, use_last_updated_date)
+		use_registration_date, use_last_updated_date)
 		values
-		(#{user.username},#{user.password},#{user.email},#{user.nickname},#{user.uuid},UTC_TIMESTAMP(),UTC_TIMESTAMP())
+		(#{user.username},#{user.password},#{user.email},#{user.nickname},UTC_TIMESTAMP(),UTC_TIMESTAMP())
 	</insert>
 
 	<delete id="deleteUserByUsername">

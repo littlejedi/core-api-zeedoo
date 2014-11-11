@@ -7,14 +7,12 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.zeedoo.commons.domain.User;
-import com.zeedoo.core.api.database.mapper.SqlService;
 
 public class UserDaoTest extends EntityDaoTest {
 	
 	private static final String TEST_USER_UUID = "5102e2a9-201c-4a26-8d69-7b8b93f85a55";
 	private static final String TEST_USERNAME = "littlejedi";
 	
-	protected final SqlService sqlService = new SqlService();
 	protected final UserDao userDao;
 	
 	public UserDaoTest() throws Exception {
@@ -44,7 +42,6 @@ public class UserDaoTest extends EntityDaoTest {
 		String uuidNoDashes = uuid.toString().replace("-", "");
 		user.setUsername(uuidNoDashes);
 		user.setPassword("password");
-		user.setUuid(uuid);
 		int result = userDao.insertUser(user);
 		user = userDao.getUserByUsername(uuidNoDashes);
 		Assert.assertNotNull(user);

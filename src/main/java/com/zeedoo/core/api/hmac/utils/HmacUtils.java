@@ -399,10 +399,13 @@ public class HmacUtils {
   }
 
   private static boolean isEntityRequired(Object entity, String httpMethod) {
-    return (
-      "POST".equalsIgnoreCase(httpMethod) ||
-        "PUT".equalsIgnoreCase(httpMethod)) &&
-      entity != null;
+      return false;
+      //Ignore payload for now because we allow binrary content transfer and need to include multiple media types
+      //
+	  //return (
+      //"POST".equalsIgnoreCase(httpMethod) ||
+      //  "PUT".equalsIgnoreCase(httpMethod)) &&
+      //entity != null;
   }
 
 }

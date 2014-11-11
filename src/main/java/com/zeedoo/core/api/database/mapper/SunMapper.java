@@ -1,5 +1,7 @@
 package com.zeedoo.core.api.database.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.zeedoo.commons.domain.Sun;
@@ -11,7 +13,19 @@ import com.zeedoo.commons.domain.Sun;
  */
 public interface SunMapper extends Mapper {
 	
-	Sun get(@Param(value = "sunId") String sunId);
+	List<Sun> getAllSuns(@Param("max") Integer max);
+		
+	List<String> findSuns(@Param("username") String username, @Param(value = "start") int start, @Param(value = "end") int end);
+	
+	List<Sun> findSunsFullEntity(@Param("username") String username, @Param(value = "start") int start, @Param(value = "end") int end);
+	
+	int findSunsCount(@Param("username") String username);
+		
+	Sun getSunById(@Param(value = "id") String id);
+	
+	Sun getSunBySunMacAddress(@Param(value = "sunMacAddress") String sunMacAddress);
+	
+	Sun getSunBySocketAddress(@Param(value = "ipAddress") String ipAddress, @Param(value = "port") Integer port);
 	
 	int insert(@Param(value = "sun") Sun sun);
 	

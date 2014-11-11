@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.zeedoo.core.api.config.ConfigConstants;
+import com.zeedoo.core.api.constants.Constants;
 
 @Service
 public class SqlService {
@@ -28,10 +28,10 @@ public class SqlService {
 	
 	@PostConstruct
 	public void init() throws IOException {
-	    LOGGER.info("Creating SqlSessionFactory....");
-	    InputStream inputStream = Resources.getResourceAsStream(ConfigConstants.MYBATIS_CONFIG_FILE);
+	    LOGGER.info("Creating SqlSessionFactory for environment=" + environment);
+	    InputStream inputStream = Resources.getResourceAsStream(Constants.MYBATIS_CONFIG_FILE);
 	    sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment);
-	    LOGGER.info("Creating SqlSessionManager....");
+	    LOGGER.info("Creating SqlSessionManager for environment=" + environment);
 	    sqlSessionManager = SqlSessionManager.newInstance(sqlSessionFactory);
 	}
     

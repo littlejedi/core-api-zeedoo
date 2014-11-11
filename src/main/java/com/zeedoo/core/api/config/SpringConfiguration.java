@@ -21,6 +21,9 @@ public class SpringConfiguration {
 	
 	@Value("${config.env}")
 	private String env;
+	
+	@Value("${config.baseUrl}")
+	private String baseUrl;
 
 	@Value("${config.message}")
 	private String message;
@@ -64,6 +67,14 @@ public class SpringConfiguration {
 
 	public void setEnv(String env) {
 		this.env = env;
+	}
+	
+	public String getBaseUrl() {
+		return baseUrl;
+	}
+
+	public void setBaseUrl(String baseUrl) {
+		this.baseUrl = baseUrl;
 	}
 	
 	public String getUrbanAirshipApiKey() {

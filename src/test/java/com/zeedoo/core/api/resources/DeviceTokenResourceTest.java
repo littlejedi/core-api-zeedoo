@@ -7,21 +7,13 @@ import javax.ws.rs.core.MediaType;
 import junit.framework.Assert;
 
 import org.eclipse.jetty.server.Response;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.zeedoo.commons.domain.DeviceToken;
-import com.zeedoo.core.api.App;
-import com.zeedoo.core.api.DropwizardJunitRunner;
-import com.zeedoo.core.api.ServiceConfiguration;
-import com.zeedoo.core.api.TestConstants;
 import com.zeedoo.core.api.database.dao.DeviceTokenDao;
 import com.zeedoo.core.api.database.mapper.SqlService;
 
-@RunWith(DropwizardJunitRunner.class)
-@ServiceConfiguration(value = App.class, setting = TestConstants.TEST_YAML_CONFIG)
 public class DeviceTokenResourceTest extends BaseResourceTest {
 	
 	protected final SqlService sqlService = new SqlService();
@@ -34,7 +26,12 @@ public class DeviceTokenResourceTest extends BaseResourceTest {
 		deviceTokenDao.setSqlService(sqlService);
 	}
 	
-	@Test
+	@Override
+	public void runTests() {		
+		testRegisterDeviceToken();
+		testUnregisterDeviceToken();
+	}
+	
 	public void testRegisterDeviceToken() {
 		WebResource webResource = client
 				.resource("http://localhost:9898/deviceToken");
@@ -45,7 +42,6 @@ public class DeviceTokenResourceTest extends BaseResourceTest {
 		Assert.assertEquals(Response.SC_OK, response.getStatus());		
 	}
 	
-	@Test
 	public void testUnregisterDeviceToken() {
 		//DELETE has to call aysnc web resource
 		WebResource webResource = client

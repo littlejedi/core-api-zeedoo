@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zeedoo.core.api.database.mapper.SunStatusMapper">
+<mapper namespace="com.zeedoo.core.api.database.mapper.SunStatusMapper"> 
 	<resultMap type="com.zeedoo.commons.domain.SunStatus" id="sunStatusMap">
 	    <result column="id" property="id" />
 	    <result column="sas_sun_mac_address" property="sunMacAddress" />

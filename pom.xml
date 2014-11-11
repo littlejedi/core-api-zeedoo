@@ -11,15 +11,7 @@
 		<dropwizard.version>0.6.2</dropwizard.version>
 		<zeedoo.commons.version>0.12-SNAPSHOT</zeedoo.commons.version>
 	</properties>
-
-	<repositories>
-		<repository>
-			<id>repository.springframework.maven.release</id>
-			<name>Spring Framework Maven Release Repository</name>
-			<url>http://maven.springframework.org/release</url>
-		</repository>
-	</repositories>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.yammer.dropwizard</groupId>
@@ -59,6 +51,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<!-- Jersey, for cross origin filter -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlets</artifactId>
+            <version>8.1.10.v20130312</version>
+        </dependency>
 
 		<!-- Dropwizard and Spring integration -->
 		<dependency>
@@ -109,16 +108,28 @@
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
-			<version>3.2.2</version>
+			<version>3.2.3</version>
 		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.23</version>
+			<version>5.1.28</version>
 		</dependency>
 
+	    <dependency>
+		    <groupId>c3p0</groupId>
+		    <artifactId>c3p0</artifactId>
+		    <version>0.9.1.2</version>
+	    </dependency>
+
 		<!-- Jersey -->
+		<dependency>
+		    <groupId>com.sun.jersey.contribs</groupId>
+		    <artifactId>jersey-multipart</artifactId>
+		    <version>1.17.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
@@ -138,6 +149,13 @@
 			<version>1.9.0</version>
 			<scope>compile</scope>
 		</dependency>
+		
+		<!-- Java API for Microsoft documents -->
+		<dependency>
+	        <groupId>org.apache.poi</groupId>
+	        <artifactId>poi</artifactId>
+	        <version>3.9</version>
+        </dependency>
 
 		<!-- Test -->
 		<dependency>

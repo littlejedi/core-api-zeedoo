@@ -2,14 +2,17 @@
 http:
 
   # The port on which the HTTP server listens for service requests.
-  port: 9898
+  port: 8080
+  
+  # Admin port
+  adminPort : 8080
 
   # The type of connector to use. Other valid values are "nonblocking" or "legacy". In general, the
   # blocking connector should be used for low-latency services with short request durations. The
   # nonblocking connector should be used for services with long request durations or which
   # specifically take advantage of Jetty's continuation support.
   # If you need SSL support, you can either choose from "nonblocking+ssl" or "legacy+ssl".
-  connectorType: blocking
+  connectorType: nonblocking+ssl
   
   # HTTP request log settings.
   requestLog:
@@ -20,20 +23,32 @@ http:
       # If true, log requests to stdout.
       enabled: false
   # SSL
-  #ssl:
-  #  keyStore: ./example.keystore
-  #  keyStorePassword: example
+  ssl:
+    keyStore: ./keystores/ssl.jks
+    keyStorePassword: testcert123
       
  # Logging settings.
 logging:
 
   # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
   level: INFO
+  
+  file:
+  
+    # If true, write log statements to a file.
+    enabled: true
+    currentLogFilename: logs/stdout.log
+    archivedLogFilenamePattern: ./logs/stdout-%d.log
+    archivedFileCount: 5
+    timeZone: Asia/Shanghai
 
 config:
 
   # Environment
-  env: dev
+  env: test
+  
+  # Base Url
+  baseUrl: https://www.zeedoo.cn:8080
 
   # The hello message to display at http://localhost:9898/hello
   message: Welcome to the hello application !!!

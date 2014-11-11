@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zeedoo.core.api.database.mapper.SensorMapper">  
+	<resultMap type="com.zeedoo.commons.domain.Sensor" id="sensorMap">
+	    <result column="id" property="id" />
+	    <result column="sen_id" property="sensorId" />
+	    <result column="sen_mac_id" property="sensorMacId" />
+	    <result column="sen_scale" property="sensorScale" />
+	    <result column="sen_access_hash" property="sensorAccessHash" />
+	    <result column="sen_sty_id" property="sensorTypeId" />
+	    <result column="sen_use_username" property="sensorUsername" />
+	    <result column="sen_alive_status" property="sensorStatus" />
+	    <result column="sen_sun_ip_address" property="sunIpAddress" />
+	    <result column="sen_sun_ip_port" property="sunIpPort" />
+	    <result column="sen_sun_mac_address" property="sunMacAddress" />
+	    <result column="sen_status_last_updated" property="lastStatusUpdated" />
+	</resultMap>
+	
+	<select id="get" resultMap="sensorMap">
+	     SELECT
+	        id, 
+	        sen_id, 
+	        sen_mac_id,
+	        sen_scale,
+	        sen_access_hash,
+	        sen_sty_id,
+	        sen_use_username,
+	        sen_alive_status, 
+	        INET_NTOA(sen_sun_ip_address) AS sunIpAddress, 
+	        sen_sun_ip_port, 
+	        sen_sun_mac_address, 
+	        sen_status_last_updated
+	     FROM sensor
+	     WHERE sen_id = #{sensorId}	    
+	</select>
+	
+	<select id="findSensors" resultType="java.lang.String">
+	     SELECT sen_id
+	     FROM sensor
+	     <where>
+	       <if test="sunMacAddress != null">
+	          sen_sun_mac_address = #{sunMacAddress}
+	       </if>
+	       <if test="username != null">
+	          AND sen_use_username = #{username}
+	       </if> 
+	     </where>
+	     LIMIT
+	     #{start}, #{end}
+	</select>
+	
+	<select id="findSensorsFullEntity" resultMap="sensorMap">
+	     SELECT
+	        id, 
+	        sen_id, 
+	        sen_mac_id,
+	        sen_scale,
+	        sen_access_hash,
+	        sen_sty_id,
+	        sen_use_username,
+	        sen_alive_status, 
+	        INET_NTOA(sen_sun_ip_address) AS sunIpAddress, 
+	        sen_sun_ip_port, 
+	        sen_sun_mac_address, 
+	        sen_status_last_updated
+	     FROM sensor
+	     <where>
+	       <if test="sunMacAddress != null">
+	          sen_sun_mac_address = #{sunMacAddress}
+	       </if>
+	       <if test="username != null">
+	          AND sen_use_username = #{username}
+	       </if> 
+	     </where>
+	     LIMIT
+	     #{start}, #{end}
+	</select>
+	
+	<select id="findSensorsCount" resultType="java.lang.Integer">
+	     SELECT COUNT(sen_id)
+	     FROM sensor
+	     <where>
+	       <if test="sunMacAddress != null">
+	          sen_sun_mac_address = #{sunMacAddress}
+	       </if>
+	       <if test="username != null">
+	          AND sen_use_username = #{username}
+	       </if> 
+	     </where>
+	</select>
+		
+	<insert id="insert">
+	    INSERT INTO sensor (sen_id, 
+	       sen_mac_id,
+	       sen_scale,
+	       sen_access_hash,
+	       sen_sty_id,
+	       sen_use_username,
+	       sen_alive_status, 
+	       sen_sun_ip_address, 
+	       sen_sun_ip_port, 
+	       sen_sun_mac_address, 
+	       sen_status_last_updated)
+	    values
+	    (
+	       #{sensor.sensorId},
+	       #{sensor.sensorMacId},
+	       #{sensor.sensorScale},
+	       #{sensor.sensorAccessHash},
+	       #{sensor.sensorTypeId},
+	       #{sensor.sensorUsername},
+	       #{sensor.sensorStatus},
+	       INET_ATON(#{sensor.sunIpAddress}),
+	       #{sensor.sunIpPort},
+	       #{sensor.sunMacAddress}, 
+	       UNIX_TIMESTAMP())
+	</insert>
+	
+	<insert id="delete">
+	    DELETE FROM sensor
+	    WHERE sen_id = #{sensorId}
+	</insert>
+
+	<update id="update">
+		UPDATE sensor SET
+		  sen_alive_status = #{sensor.sensorStatus},
+		  sen_mac_id = #{sensor.sensorMacId},
+	      sen_scale = #{sensor.sensorScale},
+	      sen_access_hash = #{sensor.sensorAccessHash},
+	      sen_sty_id = #{sensor.sensorTypeId},
+	      sen_use_username = #{sensor.sensorUsername},
+		  sen_sun_ip_address = INET_ATON(#{sensor.sunIpAddress}),
+		  sen_sun_ip_port = #{sensor.sunIpPort},
+		  sen_sun_mac_address = #{sensor.sunMacAddress},
+		  sen_status_last_updated = UNIX_TIMESTAMP()
+		WHERE sen_id = #{sensor.sensorId}
+	</update>
+</mapper>

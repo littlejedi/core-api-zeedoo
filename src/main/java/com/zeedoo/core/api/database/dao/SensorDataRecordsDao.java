@@ -61,8 +61,8 @@ public class SensorDataRecordsDao extends EntityDao<SensorDataRecordsMapper> {
 		if (dateTime == null) {
 			return null;
 		}
-		// Divide by 1000L to get the unix stamp
-	    return dateTime.getMillis() / 1000L;
+		// We keep the value in MILLIS to do the time comparison
+	    return dateTime.getMillis();
 	}
 
 }

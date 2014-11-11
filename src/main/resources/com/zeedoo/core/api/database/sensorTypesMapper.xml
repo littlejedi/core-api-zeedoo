@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zeedoo.core.api.database.mapper.SensorTypesMapper">  
+	<resultMap type="com.zeedoo.commons.domain.SensorType" id="sensorTypeMap">
+	    <result column="sty_id" property="id" />
+	    <result column="sty_name" property="name" />
+	    <result column="sty_unit" property="unit" />
+	    <collection property="translations" ofType="com.zeedoo.commons.domain.SensorTypeTranslation">
+	      <result column="stt_locale" property="locale"/>
+	      <result column="stt_short_name" property="shortName"/>
+	      <result column="stt_full_name" property="longName"/>
+	    </collection>
+	</resultMap>
+	
+	<select id="getSensorTypes" resultMap="sensorTypeMap">
+	  SELECT stypes.sty_id, stypes.sty_name, stypes.sty_unit, stranslations.stt_locale, stranslations.stt_short_name, stranslations.stt_full_name
+	  FROM sensor_types stypes
+	  LEFT OUTER JOIN sensor_types_translations stranslations
+	  ON stypes.sty_id = stranslations.stt_sty_id
+	</select>
+</mapper>
